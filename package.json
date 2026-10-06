@@ -1,0 +1,1 @@
+{"name":"soundcoding-ensemble","version":"1.0.0","private":true,"description":"Team code review through deterministic musical motifs and source-linked harmony","scripts":{"build":"node scripts/build.mjs","test":"node --test tests/*.test.cjs"}}

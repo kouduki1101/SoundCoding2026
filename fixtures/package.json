@@ -1,0 +1,11 @@
+{
+  "name": "soundcoding-ticket-team-fixtures",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs",
+    "verify:base": "node verify.mjs --stage base",
+    "verify:draft": "node verify.mjs --stage draft",
+    "verify:aligned": "node verify.mjs --stage aligned"
+  }
+}

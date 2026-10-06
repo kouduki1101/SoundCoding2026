@@ -1,0 +1,141 @@
+{
+  "format": "soundcoding-review-cases/1",
+  "purpose": "チケット予約サンプルの名称・stage・okプロパティに依存しない、独立に作成した小規模JavaScriptの検証材料。",
+  "status": {
+    "fixtureRuntime": "2026-10-04: node --test tests/review-cases.test.cjs で9件成功・0件失敗。本体の解析や聴取は別途検証する。",
+    "analyzerAndScore": "本体実装との照合は別途必要",
+    "humanListening": "未実施",
+    "blindHoldout": "未実施。初回シーンに採用したケースは独立した未見評価とは数えない。"
+  },
+  "inputScope": "ES modules、同期関数、静的な相対import、通常のオブジェクト・配列。runtime-dispatchは解析範囲外を正しく残すための反例。",
+  "executionNote": "テストで実行するのはリポジトリに収録したこれらの既知のfixtureだけ。アップロードしたコードを実行・外部送信する処理ではない。",
+  "cases": [
+    {
+      "id": "delivery-route",
+      "title": "依頼は、どちらの相手へ",
+      "request": "架空の配送担当・ユイからの依頼：「急ぎの配送に対応する変更を、一緒に見てください。」",
+      "description": "両版に同じ二つの配送計画関数を置き、呼び出す側の一行だけを変更する。どちらも意図した動作で、不具合の正解例ではない。",
+      "files": [
+        "src/channels.js",
+        "src/delivery.js"
+      ],
+      "changedFiles": [
+        "src/delivery.js"
+      ],
+      "expectation": {
+        "kind": "intentional-call-target-change",
+        "caller": {
+          "file": "src/delivery.js",
+          "function": "prepareDelivery",
+          "line": 4
+        },
+        "beforeTarget": {
+          "file": "src/channels.js",
+          "function": "planStandard",
+          "line": 1
+        },
+        "afterTarget": {
+          "file": "src/channels.js",
+          "function": "planExpress",
+          "line": 5
+        },
+        "unchangedFunctions": [
+          "src/channels.js#planStandard",
+          "src/channels.js#planExpress"
+        ],
+        "runtime": "同じ荷物の計画が standard / 3日 から express / 1日 に変わる。両方とも仕様どおり。外部への配送指示は発行しない。",
+        "music": "呼出先に対応した既存主題の引用先が変わる。二つの相手自身の主題・不変ブロックの音列は保つ。正常/異常の音を付けない。",
+        "limits": "出力した計画オブジェクトを確認する有限ケース。実配送や全入力の保証ではない。"
+      }
+    },
+    {
+      "id": "session-total",
+      "title": "同じ仕事、違う節回し",
+      "request": "架空の運営担当・アキからの依頼：「集計の書き方を変えました。この仕事の流れを一緒に見てください。」",
+      "description": "reduce を for…of に書き換える。呼ぶ相手と呼ぶ側は同じ。有限の入力で結果の一致を確認する。",
+      "files": [
+        "src/report.js",
+        "src/totals.js"
+      ],
+      "changedFiles": [
+        "src/totals.js"
+      ],
+      "expectation": {
+        "kind": "style-only-for-tested-inputs",
+        "caller": {
+          "file": "src/report.js",
+          "function": "makeReport",
+          "line": 4
+        },
+        "target": {
+          "file": "src/totals.js",
+          "function": "totalMinutes",
+          "line": 1
+        },
+        "unchangedFunctions": [
+          "src/report.js#makeReport"
+        ],
+        "runtime": "0〜240の整数のminutesを持つ配列55組で結果と入力の非変更を確認する。",
+        "music": "変更した集計ブロックの奏法だけが変わり、関数の同一性と同じ接点を保つ。文体へ優劣やバグ判定を付けない。",
+        "limits": "NaN、getter、Proxy、浮動小数点の丸め、例外などを含めたJavaScript全入力の同値性証明ではない。"
+      }
+    },
+    {
+      "id": "profile-presence",
+      "title": "見つかったことと、状態は別",
+      "request": "架空の画面担当・ソラからの依頼：「表示処理を整えました。プロフィールの扱いを見てください。」",
+      "description": "object または null を返す検索の存在確認は正常。online:false のオブジェクトも見つかった結果として使う。afterはコメント・空白だけの変更。",
+      "files": [
+        "src/caption.js",
+        "src/profiles.js"
+      ],
+      "changedFiles": [
+        "src/caption.js"
+      ],
+      "expectation": {
+        "kind": "valid-object-presence-check",
+        "caller": {
+          "file": "src/caption.js",
+          "function": "profileCaption"
+        },
+        "target": {
+          "file": "src/profiles.js",
+          "function": "findProfile"
+        },
+        "runtime": "localはonline:falseでもLocal profile、guestはGuest profile、未登録はNot foundを返す。",
+        "music": "コメント・整形だけの変更なので主題・不変ブロック・接点の音列を保つ。objectの真偽判定をそれだけで契約違反や音の衝突にしない。",
+        "limits": "検索結果はobjectまたはnull。任意のobjectの意味やオンライン状態の是非は判定しない。"
+      }
+    },
+    {
+      "id": "runtime-dispatch",
+      "title": "相手が実行時に決まる呼出し",
+      "request": "架空の処理担当・ナギからの依頼：「入力補正を足しました。実行時に渡す処理とのつながりを確認してください。」",
+      "description": "registry[key]から受け取る関数を呼ぶ。定義済みの関数が見えていても、入力のregistryとkeyを知らずに相手を確定しない。",
+      "files": [
+        "src/handlers.js",
+        "src/runner.js"
+      ],
+      "changedFiles": [
+        "src/runner.js"
+      ],
+      "expectation": {
+        "kind": "unresolved-dynamic-call",
+        "caller": {
+          "file": "src/runner.js",
+          "function": "executeStep",
+          "line": 3
+        },
+        "calledIdentifier": "step",
+        "resolvedTarget": null,
+        "unchangedFunctions": [
+          "src/handlers.js#double",
+          "src/handlers.js#offset"
+        ],
+        "runtime": "渡された関数を1回呼ぶ。afterはその引数に1を足す。double/offsetに加え、外部から渡した関数でも動作を確認する。",
+        "music": "呼出先は未解析と表示する。近くにある関数を推測で接続したり、無応答・失敗・成功を捏造したりしない。不変の定義の音列は保つ。",
+        "limits": "Nodeでの具体的な実行結果は静的解析が呼出先を決定できた証拠ではない。"
+      }
+    }
+  ]
+}

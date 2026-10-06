@@ -1,0 +1,23 @@
+SoundCoding sample provenance and usage permission
+
+Original recordings: University of Iowa Electronic Music Studios, Musical
+Instrument Samples. Piano: Steinway & Sons Model B, performed by Evan Mazunik,
+recorded by Michael Cash. Violin: Josue Jean-Francois, recorded by Jean-Paul Perrotte.
+
+The official collection page grants use "for any projects, without restrictions"
+and explicitly includes application developers among its users.
+This is the collection's own permission statement, not an assertion that a
+standard SPDX or Creative Commons license was supplied.
+
+Permission source, checked 2026-10-03:
+https://theremin.music.uiowa.edu/MIS.html
+Recording details and original downloads:
+https://theremin.music.uiowa.edu/MISpiano.html
+https://theremin.music.uiowa.edu/MISviolin.html
+
+Derived assets in this folder retain the recorded instrument audio. They have
+been trimmed to a single note, peak-normalized, edge-faded, and converted from
+16-bit 44.1 kHz AIFF to 16-bit 44.1 kHz WAV. There is no generated composition in
+these samples; ScorePlayer follows only the supplied timeline.
+
+See manifest.json for each source file and processing duration.

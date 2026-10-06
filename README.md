@@ -84,4 +84,3 @@ node fixtures/verify.mjs
 Google Cloud / Google AI は未接続です。第5回ハッカソンには、Google Cloudのアプリケーション実行プロダクトとGoogle AI技術の利用が必要です。今後、選択中の接点に絞った追加調査を接続し、根拠・未確認事項・停止条件・送信範囲・費用を管理する必要があります。[公式要項](https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol5)
 
 実際の利用者による聴取評価は未実施です。「また聴きたい」と「コードについて具体的な確認ができた」を別々に検証します。コードテストや自己レビューの成功を、理解速度・レビュー工数・受賞可能性の実証とは扱いません。
-

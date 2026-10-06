@@ -1,0 +1,61 @@
+{
+  "source": "University of Iowa Electronic Music Studios",
+  "page": "https://theremin.music.uiowa.edu/MIS.html",
+  "samples": [
+    {
+      "file": "piano-c3",
+      "root": 48,
+      "seconds": 4.2,
+      "family": "piano",
+      "original": "Piano_Other/piano/Piano.mf.C3.aiff",
+      "channels": 2,
+      "sampleRate": 44100,
+      "onsetSeconds": 0.5491836734693878,
+      "bytes": 740924
+    },
+    {
+      "file": "piano-c4",
+      "root": 60,
+      "seconds": 4.2,
+      "family": "piano",
+      "original": "Piano_Other/piano/Piano.mf.C4.aiff",
+      "channels": 2,
+      "sampleRate": 44100,
+      "onsetSeconds": 0.3396825396825397,
+      "bytes": 740924
+    },
+    {
+      "file": "piano-c5",
+      "root": 72,
+      "seconds": 3.6,
+      "family": "piano",
+      "original": "Piano_Other/piano/Piano.mf.C5.aiff",
+      "channels": 2,
+      "sampleRate": 44100,
+      "onsetSeconds": 0.4228571428571429,
+      "bytes": 635084
+    },
+    {
+      "file": "strings-a4",
+      "root": 69,
+      "seconds": 1.7,
+      "family": "strings",
+      "original": "Strings/violin/Violin.arco.mf.sulA.A4B4.aiff",
+      "channels": 1,
+      "sampleRate": 44100,
+      "onsetSeconds": 2.5382312925170067,
+      "bytes": 149984
+    },
+    {
+      "file": "pluck-a4",
+      "root": 69,
+      "seconds": 1.15,
+      "family": "pluck",
+      "original": "Strings/violin/Violin.pizz.mf.sulA.A4B4.aiff",
+      "channels": 1,
+      "sampleRate": 44100,
+      "onsetSeconds": 2.077392290249433,
+      "bytes": 101474
+    }
+  ]
+}

@@ -1,0 +1,3802 @@
+{
+  "schemaVersion": "soundcoding-story-fixtures/1",
+  "title": "架空のライブチケット予約チーム",
+  "fictionalTeam": [
+    {
+      "id": "mina",
+      "name": "ミナ",
+      "role": "料金計算。最初は reduce で書き、ペア作業で等価な for も試す。"
+    },
+    {
+      "id": "ren",
+      "name": "レン",
+      "role": "在庫予約。明示的な逐次処理で書き、予約参照を返す API に変更する。"
+    },
+    {
+      "id": "aoi",
+      "name": "葵",
+      "role": "共有した checkout と各部品の契約を確認するレビュー担当。"
+    }
+  ],
+  "provenance": "All characters, collaboration history, source, and inventory data are fictional and authored for this demonstration. They do not describe real developers.",
+  "inputContract": {
+    "checkout": "A nonempty array of valid ticket lines. Each has a known sku, a nonnegative safe integer unitPrice in JPY, and a positive integer quantity. Arithmetic stays within JavaScript safe integer range. discountRate is finite in [0,1].",
+    "pricing": "Pricing also accepts an empty array and zero quantities; those are exercised separately. No claim of general-purpose input validation is made.",
+    "reservation": "An in-memory synchronous reservation only. base returns boolean. draft/aligned return {ok:boolean,holdId:string|null}. The checkout fixture consumes ok; issuance, cancellation, external payment, and concurrent persistence are outside this example."
+  },
+  "interpretation": [
+    "Writing style and fictional authorship are not quality scores or instrument assignments.",
+    "The repair changes the checkout guard's local AST; it preserves the pricing and inventory sources exactly. Do not claim every local statement remains unchanged.",
+    "A static musical arrangement is not an execution trace. Verified failures are bound to sourceSha256 and test names.",
+    "The failed tests assert a wrong result and an unnecessary call; the fixture program does not throw or crash. Any music stop represents the verified test failure, not a runtime crash location.",
+    "Passing this finite fixture suite does not prove correctness for arbitrary inputs or code. Edited/uploaded code is unexecuted until separately verified."
+  ],
+  "story": [
+    {
+      "stage": "base",
+      "title": "それぞれの書き方で、ひとつの予約を作る",
+      "detail": "ミナの reduce とレンの for。boolean の予約結果を共有 checkout が受け取る。"
+    },
+    {
+      "stage": "draft",
+      "title": "書き方は変わっても、契約の変更は別の話",
+      "detail": "料金の for 化は検証した入力で同じ金額。予約 API はオブジェクトへ変わったが、checkout の判定はそのまま残る。"
+    },
+    {
+      "stage": "aligned",
+      "title": "相手が返す形に、受け取り方を合わせる",
+      "detail": "葵のレビュー後、ミナとレンが共有する checkout の条件を予約結果の ok へ変更。料金と在庫の主題はそのまま。"
+    }
+  ],
+  "stages": {
+    "base": {
+      "id": "base",
+      "files": {
+        "src/checkout.js": "import { quote } from \"./pricing.js\";\nimport { reserve } from \"./inventory.js\";\n\n// Fictional shared integration; Aoi reviews the boundary between the parts.\nexport function checkout(lines, inventory, { discountRate = 0, price = quote } = {}) {\n  const reservation = reserve(inventory, lines);\n  if (!reservation) {\n    return { status: \"sold-out\" };\n  }\n  const amount = price(lines, discountRate);\n  return { status: \"confirmed\", ...amount };\n}\n",
+        "src/inventory.js": "// Fictional team: Ren keeps inventory changes explicit and sequential.\nexport function reserve(inventory, lines) {\n  const remaining = inventory.remaining;\n  const required = new Map();\n  for (const line of lines) {\n    required.set(line.sku, (required.get(line.sku) ?? 0) + line.quantity);\n  }\n  for (const [sku, quantity] of required) {\n    if ((remaining.get(sku) ?? 0) < quantity) {\n      return false;\n    }\n  }\n  for (const [sku, quantity] of required) {\n    remaining.set(sku, remaining.get(sku) - quantity);\n  }\n  return true;\n}\n\nexport function createInventory(initialStock) {\n  return { remaining: new Map(Object.entries(initialStock)), nextHoldId: 1 };\n}\n",
+        "src/pricing.js": "// Fictional team: Mina's original calculation, reviewed together with Ren.\nexport function quote(lines, discountRate = 0) {\n  const subtotal = lines.reduce(\n    (sum, line) => sum + line.unitPrice * line.quantity,\n    0\n  );\n  const discount = Math.round(subtotal * discountRate);\n  return { subtotal, discount, total: subtotal - discount, currency: \"JPY\" };\n}\n"
+      },
+      "fileHashes": {
+        "src/checkout.js": "7ce2364bb76ba163bd3323b2c59b02d73bf65b7d2463124f90a3ca08205013f2",
+        "src/inventory.js": "c72d60b1071dfff760f67cba21a908151835e70b4f47f47e00f8be08621265e6",
+        "src/pricing.js": "e8f1e0e559af4e57e62b1ad2d1de9fbc1abc5ebbef8ffdff3ff607cb8fc5dd4a"
+      },
+      "sourceSha256": "6e2723bcfe4b0e97457e061dbc9b1fde4c2245e83697ff665051b0653738c823",
+      "evidence": [
+        {
+          "id": "subtotal-style",
+          "file": "src/pricing.js",
+          "startLine": 3,
+          "endLine": 6,
+          "meaning": "同じ料金の小計を reduce で合計する。",
+          "evidenceKind": "source",
+          "tests": [
+            "pricing-style-equivalence"
+          ]
+        },
+        {
+          "id": "discount-rounding",
+          "file": "src/pricing.js",
+          "startLine": 7,
+          "endLine": 7,
+          "meaning": "割引額だけを円単位で四捨五入し、小計から引く。",
+          "evidenceKind": "source",
+          "tests": [
+            "pricing-rounded-discount"
+          ]
+        },
+        {
+          "id": "reserve-failure-contract",
+          "file": "src/inventory.js",
+          "startLine": 10,
+          "endLine": 10,
+          "meaning": "予約拒否は boolean の false を返す。",
+          "evidenceKind": "source",
+          "tests": [
+            "inventory-refusal-is-atomic"
+          ]
+        },
+        {
+          "id": "reserve-success-contract",
+          "file": "src/inventory.js",
+          "startLine": 16,
+          "endLine": 16,
+          "meaning": "予約成功は boolean の true を返す。",
+          "evidenceKind": "source",
+          "tests": [
+            "inventory-success-contract"
+          ]
+        },
+        {
+          "id": "reservation-call",
+          "file": "src/checkout.js",
+          "startLine": 6,
+          "endLine": 6,
+          "meaning": "checkout が在庫予約の返り値を受け取る。",
+          "evidenceKind": "source",
+          "tests": [
+            "checkout-success"
+          ]
+        },
+        {
+          "id": "reservation-guard",
+          "file": "src/checkout.js",
+          "startLine": 7,
+          "endLine": 7,
+          "meaning": "boolean 契約の false を確認し、予約拒否で戻る。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-rejects-insufficient-stock"
+          ]
+        },
+        {
+          "id": "pricing-call",
+          "file": "src/checkout.js",
+          "startLine": 10,
+          "endLine": 10,
+          "meaning": "予約を通過した後に料金計算を呼ぶ。テストでは実関数を包んで呼出回数を数える。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-skips-pricing-after-refusal",
+            "checkout-success"
+          ]
+        },
+        {
+          "id": "confirmed-result",
+          "file": "src/checkout.js",
+          "startLine": 11,
+          "endLine": 11,
+          "meaning": "確定扱いの結果を返す。外部決済や発券は行わない。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-rejects-insufficient-stock",
+            "checkout-success"
+          ]
+        }
+      ],
+      "verification": {
+        "status": "passed",
+        "sourceSha256": "6e2723bcfe4b0e97457e061dbc9b1fde4c2245e83697ff665051b0653738c823",
+        "command": "node verify.mjs --stage base",
+        "testCount": 11,
+        "passed": 11,
+        "failed": 0,
+        "cases": [
+          {
+            "id": "pricing-normal",
+            "name": "3 枚の料金と 10% 割引",
+            "title": "3 枚の料金と 10% 割引",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-empty",
+            "name": "料金計算は空配列を 0 円とする",
+            "title": "料金計算は空配列を 0 円とする",
+            "status": "passed",
+            "input": {
+              "lines": [],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-rounded-discount",
+            "name": "円単位で割引を丸める",
+            "title": "円単位で割引を丸める",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 101,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.15
+            },
+            "expected": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-style-equivalence",
+            "name": "reduce / for を 80 組の入力で照合",
+            "title": "reduce / for を 80 組の入力で照合",
+            "status": "passed",
+            "input": {
+              "unitPrices": [
+                0,
+                1,
+                101,
+                8500
+              ],
+              "quantities": [
+                0,
+                1,
+                2,
+                9
+              ],
+              "discountRates": [
+                0,
+                0.1,
+                0.15,
+                0.25,
+                1
+              ]
+            },
+            "expected": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "actual": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "observed": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-success-contract",
+            "name": "予約成功の返り値と在庫の減少",
+            "title": "予約成功の返り値と在庫の減少",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": true,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "reservation": true,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "reservation": true,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-refusal-is-atomic",
+            "name": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "title": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 0
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": false,
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "actual": {
+              "reservation": false,
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "observed": {
+              "reservation": false,
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-aggregates-duplicate-sku",
+            "name": "同じ券種の複数行を合計して在庫を確認する",
+            "title": "同じ券種の複数行を合計して在庫を確認する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 3
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                }
+              ]
+            },
+            "expected": {
+              "reservation": false,
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "actual": {
+              "reservation": false,
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "observed": {
+              "reservation": false,
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-success",
+            "name": "在庫があれば一度だけ料金計算して確定する",
+            "title": "在庫があれば一度だけ料金計算して確定する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-default-price",
+            "name": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "title": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-rejects-insufficient-stock",
+            "name": "在庫不足では成功扱いにしない",
+            "title": "在庫不足では成功扱いにしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "sold-out"
+            },
+            "actual": {
+              "status": "sold-out"
+            },
+            "observed": {
+              "status": "sold-out"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 7,
+              "endLine": 7
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-skips-pricing-after-refusal",
+            "name": "予約拒否の後に不要な料金計算をしない",
+            "title": "予約拒否の後に不要な料金計算をしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "actual": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "observed": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 10,
+              "endLine": 10
+            },
+            "failure": null
+          }
+        ]
+      }
+    },
+    "draft": {
+      "id": "draft",
+      "files": {
+        "src/checkout.js": "import { quote } from \"./pricing.js\";\nimport { reserve } from \"./inventory.js\";\n\n// Fictional shared integration; Aoi reviews the boundary between the parts.\nexport function checkout(lines, inventory, { discountRate = 0, price = quote } = {}) {\n  const reservation = reserve(inventory, lines);\n  if (!reservation) {\n    return { status: \"sold-out\" };\n  }\n  const amount = price(lines, discountRate);\n  return { status: \"confirmed\", ...amount };\n}\n",
+        "src/inventory.js": "// Fictional team: Ren adds a reservation reference to the API contract.\nexport function reserve(inventory, lines) {\n  const remaining = inventory.remaining;\n  const required = new Map();\n  for (const line of lines) {\n    required.set(line.sku, (required.get(line.sku) ?? 0) + line.quantity);\n  }\n  for (const [sku, quantity] of required) {\n    if ((remaining.get(sku) ?? 0) < quantity) {\n      return { ok: false, holdId: null };\n    }\n  }\n  for (const [sku, quantity] of required) {\n    remaining.set(sku, remaining.get(sku) - quantity);\n  }\n  return { ok: true, holdId: `hold-${inventory.nextHoldId++}` };\n}\n\nexport function createInventory(initialStock) {\n  return { remaining: new Map(Object.entries(initialStock)), nextHoldId: 1 };\n}\n",
+        "src/pricing.js": "// Fictional pair session: Mina and Ren try an equivalent explicit loop.\nexport function quote(lines, discountRate = 0) {\n  let subtotal = 0;\n  for (const line of lines) {\n    subtotal += line.unitPrice * line.quantity;\n  }\n  const discount = Math.round(subtotal * discountRate);\n  return { subtotal, discount, total: subtotal - discount, currency: \"JPY\" };\n}\n"
+      },
+      "fileHashes": {
+        "src/checkout.js": "7ce2364bb76ba163bd3323b2c59b02d73bf65b7d2463124f90a3ca08205013f2",
+        "src/inventory.js": "7b93eda21b4f2c3f2fe5bcc7c93d9b7f3fa7550f0fd21da6fcc090348f02fcc9",
+        "src/pricing.js": "cc1c71b60f27e1c0d4409c2e22b768fad3af6cf968594c466e338c79bdd49097"
+      },
+      "sourceSha256": "3dd2855308270b463134c7c336fbaf424e9109c16714e89ae415a683c5661b34",
+      "evidence": [
+        {
+          "id": "subtotal-style",
+          "file": "src/pricing.js",
+          "startLine": 3,
+          "endLine": 6,
+          "meaning": "同じ料金の小計を for で合計する。書き方の個性であり品質点数ではない。",
+          "evidenceKind": "source",
+          "tests": [
+            "pricing-style-equivalence"
+          ]
+        },
+        {
+          "id": "discount-rounding",
+          "file": "src/pricing.js",
+          "startLine": 7,
+          "endLine": 7,
+          "meaning": "割引額だけを円単位で四捨五入し、小計から引く。",
+          "evidenceKind": "source",
+          "tests": [
+            "pricing-rounded-discount"
+          ]
+        },
+        {
+          "id": "reserve-failure-contract",
+          "file": "src/inventory.js",
+          "startLine": 10,
+          "endLine": 10,
+          "meaning": "予約拒否もオブジェクトを返す。ok が false。",
+          "evidenceKind": "source",
+          "tests": [
+            "inventory-refusal-is-atomic"
+          ]
+        },
+        {
+          "id": "reserve-success-contract",
+          "file": "src/inventory.js",
+          "startLine": 16,
+          "endLine": 16,
+          "meaning": "予約成功は ok: true と予約参照 holdId を返す。",
+          "evidenceKind": "source",
+          "tests": [
+            "inventory-success-contract"
+          ]
+        },
+        {
+          "id": "reservation-call",
+          "file": "src/checkout.js",
+          "startLine": 6,
+          "endLine": 6,
+          "meaning": "checkout が在庫予約の返り値を受け取る。",
+          "evidenceKind": "source",
+          "tests": [
+            "checkout-success"
+          ]
+        },
+        {
+          "id": "reservation-guard",
+          "file": "src/checkout.js",
+          "startLine": 7,
+          "endLine": 7,
+          "meaning": "オブジェクト自体は truthy なので、ok: false でもこの拒否分岐に入らない。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-rejects-insufficient-stock"
+          ]
+        },
+        {
+          "id": "pricing-call",
+          "file": "src/checkout.js",
+          "startLine": 10,
+          "endLine": 10,
+          "meaning": "予約を通過した後に料金計算を呼ぶ。テストでは実関数を包んで呼出回数を数える。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-skips-pricing-after-refusal",
+            "checkout-success"
+          ]
+        },
+        {
+          "id": "confirmed-result",
+          "file": "src/checkout.js",
+          "startLine": 11,
+          "endLine": 11,
+          "meaning": "確定扱いの結果を返す。外部決済や発券は行わない。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-rejects-insufficient-stock",
+            "checkout-success"
+          ]
+        }
+      ],
+      "verification": {
+        "status": "failed",
+        "sourceSha256": "3dd2855308270b463134c7c336fbaf424e9109c16714e89ae415a683c5661b34",
+        "command": "node verify.mjs --stage draft",
+        "testCount": 11,
+        "passed": 9,
+        "failed": 2,
+        "cases": [
+          {
+            "id": "pricing-normal",
+            "name": "3 枚の料金と 10% 割引",
+            "title": "3 枚の料金と 10% 割引",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-empty",
+            "name": "料金計算は空配列を 0 円とする",
+            "title": "料金計算は空配列を 0 円とする",
+            "status": "passed",
+            "input": {
+              "lines": [],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-rounded-discount",
+            "name": "円単位で割引を丸める",
+            "title": "円単位で割引を丸める",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 101,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.15
+            },
+            "expected": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-style-equivalence",
+            "name": "reduce / for を 80 組の入力で照合",
+            "title": "reduce / for を 80 組の入力で照合",
+            "status": "passed",
+            "input": {
+              "unitPrices": [
+                0,
+                1,
+                101,
+                8500
+              ],
+              "quantities": [
+                0,
+                1,
+                2,
+                9
+              ],
+              "discountRates": [
+                0,
+                0.1,
+                0.15,
+                0.25,
+                1
+              ]
+            },
+            "expected": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "actual": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "observed": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-success-contract",
+            "name": "予約成功の返り値と在庫の減少",
+            "title": "予約成功の返り値と在庫の減少",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-refusal-is-atomic",
+            "name": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "title": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 0
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-aggregates-duplicate-sku",
+            "name": "同じ券種の複数行を合計して在庫を確認する",
+            "title": "同じ券種の複数行を合計して在庫を確認する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 3
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-success",
+            "name": "在庫があれば一度だけ料金計算して確定する",
+            "title": "在庫があれば一度だけ料金計算して確定する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-default-price",
+            "name": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "title": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-rejects-insufficient-stock",
+            "name": "在庫不足では成功扱いにしない",
+            "title": "在庫不足では成功扱いにしない",
+            "status": "failed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "sold-out"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 7,
+              "endLine": 7
+            },
+            "failure": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   currency: 'JPY',\n+   discount: 3250,\n+   status: 'confirmed',\n+   subtotal: 32500,\n+   total: 29250\n-   status: 'sold-out'\n  }\n",
+              "operator": "deepStrictEqual"
+            }
+          },
+          {
+            "id": "checkout-skips-pricing-after-refusal",
+            "name": "予約拒否の後に不要な料金計算をしない",
+            "title": "予約拒否の後に不要な料金計算をしない",
+            "status": "failed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "actual": {
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "observed": {
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 10,
+              "endLine": 10
+            },
+            "failure": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   pricingCalls: 1,\n-   pricingCalls: 0,\n    remaining: {\n      balcony: 2,\n      floor: 1\n    }\n  }\n",
+              "operator": "deepStrictEqual"
+            }
+          }
+        ]
+      }
+    },
+    "aligned": {
+      "id": "aligned",
+      "files": {
+        "src/checkout.js": "import { quote } from \"./pricing.js\";\nimport { reserve } from \"./inventory.js\";\n\n// Fictional shared integration; Aoi reviews the boundary between the parts.\nexport function checkout(lines, inventory, { discountRate = 0, price = quote } = {}) {\n  const reservation = reserve(inventory, lines);\n  if (!reservation.ok) {\n    return { status: \"sold-out\" };\n  }\n  const amount = price(lines, discountRate);\n  return { status: \"confirmed\", ...amount };\n}\n",
+        "src/inventory.js": "// Fictional team: Ren adds a reservation reference to the API contract.\nexport function reserve(inventory, lines) {\n  const remaining = inventory.remaining;\n  const required = new Map();\n  for (const line of lines) {\n    required.set(line.sku, (required.get(line.sku) ?? 0) + line.quantity);\n  }\n  for (const [sku, quantity] of required) {\n    if ((remaining.get(sku) ?? 0) < quantity) {\n      return { ok: false, holdId: null };\n    }\n  }\n  for (const [sku, quantity] of required) {\n    remaining.set(sku, remaining.get(sku) - quantity);\n  }\n  return { ok: true, holdId: `hold-${inventory.nextHoldId++}` };\n}\n\nexport function createInventory(initialStock) {\n  return { remaining: new Map(Object.entries(initialStock)), nextHoldId: 1 };\n}\n",
+        "src/pricing.js": "// Fictional pair session: Mina and Ren try an equivalent explicit loop.\nexport function quote(lines, discountRate = 0) {\n  let subtotal = 0;\n  for (const line of lines) {\n    subtotal += line.unitPrice * line.quantity;\n  }\n  const discount = Math.round(subtotal * discountRate);\n  return { subtotal, discount, total: subtotal - discount, currency: \"JPY\" };\n}\n"
+      },
+      "fileHashes": {
+        "src/checkout.js": "b451ef8c934c9ad318c565a9fb6215ec526091974b627446752f6f5c91a6a9e3",
+        "src/inventory.js": "7b93eda21b4f2c3f2fe5bcc7c93d9b7f3fa7550f0fd21da6fcc090348f02fcc9",
+        "src/pricing.js": "cc1c71b60f27e1c0d4409c2e22b768fad3af6cf968594c466e338c79bdd49097"
+      },
+      "sourceSha256": "8445a221620fd2899fc661d3eada35fb8bda6c1248341e5a531e1683c48236ee",
+      "evidence": [
+        {
+          "id": "subtotal-style",
+          "file": "src/pricing.js",
+          "startLine": 3,
+          "endLine": 6,
+          "meaning": "同じ料金の小計を for で合計する。書き方の個性であり品質点数ではない。",
+          "evidenceKind": "source",
+          "tests": [
+            "pricing-style-equivalence"
+          ]
+        },
+        {
+          "id": "discount-rounding",
+          "file": "src/pricing.js",
+          "startLine": 7,
+          "endLine": 7,
+          "meaning": "割引額だけを円単位で四捨五入し、小計から引く。",
+          "evidenceKind": "source",
+          "tests": [
+            "pricing-rounded-discount"
+          ]
+        },
+        {
+          "id": "reserve-failure-contract",
+          "file": "src/inventory.js",
+          "startLine": 10,
+          "endLine": 10,
+          "meaning": "予約拒否もオブジェクトを返す。ok が false。",
+          "evidenceKind": "source",
+          "tests": [
+            "inventory-refusal-is-atomic"
+          ]
+        },
+        {
+          "id": "reserve-success-contract",
+          "file": "src/inventory.js",
+          "startLine": 16,
+          "endLine": 16,
+          "meaning": "予約成功は ok: true と予約参照 holdId を返す。",
+          "evidenceKind": "source",
+          "tests": [
+            "inventory-success-contract"
+          ]
+        },
+        {
+          "id": "reservation-call",
+          "file": "src/checkout.js",
+          "startLine": 6,
+          "endLine": 6,
+          "meaning": "checkout が在庫予約の返り値を受け取る。",
+          "evidenceKind": "source",
+          "tests": [
+            "checkout-success"
+          ]
+        },
+        {
+          "id": "reservation-guard",
+          "file": "src/checkout.js",
+          "startLine": 7,
+          "endLine": 7,
+          "meaning": "新契約の ok を確認し、予約拒否で戻る。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-rejects-insufficient-stock"
+          ]
+        },
+        {
+          "id": "pricing-call",
+          "file": "src/checkout.js",
+          "startLine": 10,
+          "endLine": 10,
+          "meaning": "予約を通過した後に料金計算を呼ぶ。テストでは実関数を包んで呼出回数を数える。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-skips-pricing-after-refusal",
+            "checkout-success"
+          ]
+        },
+        {
+          "id": "confirmed-result",
+          "file": "src/checkout.js",
+          "startLine": 11,
+          "endLine": 11,
+          "meaning": "確定扱いの結果を返す。外部決済や発券は行わない。",
+          "evidenceKind": "source-and-execution",
+          "tests": [
+            "checkout-rejects-insufficient-stock",
+            "checkout-success"
+          ]
+        }
+      ],
+      "verification": {
+        "status": "passed",
+        "sourceSha256": "8445a221620fd2899fc661d3eada35fb8bda6c1248341e5a531e1683c48236ee",
+        "command": "node verify.mjs --stage aligned",
+        "testCount": 11,
+        "passed": 11,
+        "failed": 0,
+        "cases": [
+          {
+            "id": "pricing-normal",
+            "name": "3 枚の料金と 10% 割引",
+            "title": "3 枚の料金と 10% 割引",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-empty",
+            "name": "料金計算は空配列を 0 円とする",
+            "title": "料金計算は空配列を 0 円とする",
+            "status": "passed",
+            "input": {
+              "lines": [],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-rounded-discount",
+            "name": "円単位で割引を丸める",
+            "title": "円単位で割引を丸める",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 101,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.15
+            },
+            "expected": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-style-equivalence",
+            "name": "reduce / for を 80 組の入力で照合",
+            "title": "reduce / for を 80 組の入力で照合",
+            "status": "passed",
+            "input": {
+              "unitPrices": [
+                0,
+                1,
+                101,
+                8500
+              ],
+              "quantities": [
+                0,
+                1,
+                2,
+                9
+              ],
+              "discountRates": [
+                0,
+                0.1,
+                0.15,
+                0.25,
+                1
+              ]
+            },
+            "expected": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "actual": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "observed": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-success-contract",
+            "name": "予約成功の返り値と在庫の減少",
+            "title": "予約成功の返り値と在庫の減少",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-refusal-is-atomic",
+            "name": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "title": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 0
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-aggregates-duplicate-sku",
+            "name": "同じ券種の複数行を合計して在庫を確認する",
+            "title": "同じ券種の複数行を合計して在庫を確認する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 3
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-success",
+            "name": "在庫があれば一度だけ料金計算して確定する",
+            "title": "在庫があれば一度だけ料金計算して確定する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-default-price",
+            "name": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "title": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-rejects-insufficient-stock",
+            "name": "在庫不足では成功扱いにしない",
+            "title": "在庫不足では成功扱いにしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "sold-out"
+            },
+            "actual": {
+              "status": "sold-out"
+            },
+            "observed": {
+              "status": "sold-out"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 7,
+              "endLine": 7
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-skips-pricing-after-refusal",
+            "name": "予約拒否の後に不要な料金計算をしない",
+            "title": "予約拒否の後に不要な料金計算をしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "actual": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "observed": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 10,
+              "endLine": 10
+            },
+            "failure": null
+          }
+        ]
+      }
+    }
+  },
+  "verification": {
+    "schemaVersion": "soundcoding-story-verification/1",
+    "generatedAt": "2026-10-03T15:15:19.478Z",
+    "runtime": {
+      "name": "Node.js",
+      "version": "v24.19.0",
+      "platform": "win32",
+      "architecture": "x64"
+    },
+    "harnessFile": "verify.mjs",
+    "harnessSha256": "a6693ada4ab5c90683b87f91be8a90c58528bc03131dd8b22340debc61113b23",
+    "sourceHashMethod": "SHA256(UTF-8(JSON.stringify(Object.entries(files).sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0)))); exact source strings, no newline normalization",
+    "scope": "Executed only the three bundled, self-authored in-memory fixtures. No uploaded code, network, payment, or real inventory execution.",
+    "fixtureHarnessStatus": "passed",
+    "fixtureHarnessMeaning": "Base and aligned pass; draft actually fails exactly the two intended contract tests. This is not a claim that draft passes.",
+    "stages": {
+      "base": {
+        "status": "passed",
+        "sourceSha256": "6e2723bcfe4b0e97457e061dbc9b1fde4c2245e83697ff665051b0653738c823",
+        "command": "node verify.mjs --stage base",
+        "testCount": 11,
+        "passed": 11,
+        "failed": 0,
+        "cases": [
+          {
+            "id": "pricing-normal",
+            "name": "3 枚の料金と 10% 割引",
+            "title": "3 枚の料金と 10% 割引",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-empty",
+            "name": "料金計算は空配列を 0 円とする",
+            "title": "料金計算は空配列を 0 円とする",
+            "status": "passed",
+            "input": {
+              "lines": [],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-rounded-discount",
+            "name": "円単位で割引を丸める",
+            "title": "円単位で割引を丸める",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 101,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.15
+            },
+            "expected": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-style-equivalence",
+            "name": "reduce / for を 80 組の入力で照合",
+            "title": "reduce / for を 80 組の入力で照合",
+            "status": "passed",
+            "input": {
+              "unitPrices": [
+                0,
+                1,
+                101,
+                8500
+              ],
+              "quantities": [
+                0,
+                1,
+                2,
+                9
+              ],
+              "discountRates": [
+                0,
+                0.1,
+                0.15,
+                0.25,
+                1
+              ]
+            },
+            "expected": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "actual": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "observed": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-success-contract",
+            "name": "予約成功の返り値と在庫の減少",
+            "title": "予約成功の返り値と在庫の減少",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": true,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "reservation": true,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "reservation": true,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-refusal-is-atomic",
+            "name": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "title": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 0
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": false,
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "actual": {
+              "reservation": false,
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "observed": {
+              "reservation": false,
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-aggregates-duplicate-sku",
+            "name": "同じ券種の複数行を合計して在庫を確認する",
+            "title": "同じ券種の複数行を合計して在庫を確認する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 3
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                }
+              ]
+            },
+            "expected": {
+              "reservation": false,
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "actual": {
+              "reservation": false,
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "observed": {
+              "reservation": false,
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-success",
+            "name": "在庫があれば一度だけ料金計算して確定する",
+            "title": "在庫があれば一度だけ料金計算して確定する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-default-price",
+            "name": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "title": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-rejects-insufficient-stock",
+            "name": "在庫不足では成功扱いにしない",
+            "title": "在庫不足では成功扱いにしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "sold-out"
+            },
+            "actual": {
+              "status": "sold-out"
+            },
+            "observed": {
+              "status": "sold-out"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 7,
+              "endLine": 7
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-skips-pricing-after-refusal",
+            "name": "予約拒否の後に不要な料金計算をしない",
+            "title": "予約拒否の後に不要な料金計算をしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "actual": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "observed": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 10,
+              "endLine": 10
+            },
+            "failure": null
+          }
+        ]
+      },
+      "draft": {
+        "status": "failed",
+        "sourceSha256": "3dd2855308270b463134c7c336fbaf424e9109c16714e89ae415a683c5661b34",
+        "command": "node verify.mjs --stage draft",
+        "testCount": 11,
+        "passed": 9,
+        "failed": 2,
+        "cases": [
+          {
+            "id": "pricing-normal",
+            "name": "3 枚の料金と 10% 割引",
+            "title": "3 枚の料金と 10% 割引",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-empty",
+            "name": "料金計算は空配列を 0 円とする",
+            "title": "料金計算は空配列を 0 円とする",
+            "status": "passed",
+            "input": {
+              "lines": [],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-rounded-discount",
+            "name": "円単位で割引を丸める",
+            "title": "円単位で割引を丸める",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 101,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.15
+            },
+            "expected": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-style-equivalence",
+            "name": "reduce / for を 80 組の入力で照合",
+            "title": "reduce / for を 80 組の入力で照合",
+            "status": "passed",
+            "input": {
+              "unitPrices": [
+                0,
+                1,
+                101,
+                8500
+              ],
+              "quantities": [
+                0,
+                1,
+                2,
+                9
+              ],
+              "discountRates": [
+                0,
+                0.1,
+                0.15,
+                0.25,
+                1
+              ]
+            },
+            "expected": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "actual": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "observed": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-success-contract",
+            "name": "予約成功の返り値と在庫の減少",
+            "title": "予約成功の返り値と在庫の減少",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-refusal-is-atomic",
+            "name": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "title": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 0
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-aggregates-duplicate-sku",
+            "name": "同じ券種の複数行を合計して在庫を確認する",
+            "title": "同じ券種の複数行を合計して在庫を確認する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 3
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-success",
+            "name": "在庫があれば一度だけ料金計算して確定する",
+            "title": "在庫があれば一度だけ料金計算して確定する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-default-price",
+            "name": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "title": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-rejects-insufficient-stock",
+            "name": "在庫不足では成功扱いにしない",
+            "title": "在庫不足では成功扱いにしない",
+            "status": "failed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "sold-out"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 7,
+              "endLine": 7
+            },
+            "failure": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   currency: 'JPY',\n+   discount: 3250,\n+   status: 'confirmed',\n+   subtotal: 32500,\n+   total: 29250\n-   status: 'sold-out'\n  }\n",
+              "operator": "deepStrictEqual"
+            }
+          },
+          {
+            "id": "checkout-skips-pricing-after-refusal",
+            "name": "予約拒否の後に不要な料金計算をしない",
+            "title": "予約拒否の後に不要な料金計算をしない",
+            "status": "failed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "actual": {
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "observed": {
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 10,
+              "endLine": 10
+            },
+            "failure": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   pricingCalls: 1,\n-   pricingCalls: 0,\n    remaining: {\n      balcony: 2,\n      floor: 1\n    }\n  }\n",
+              "operator": "deepStrictEqual"
+            }
+          }
+        ]
+      },
+      "aligned": {
+        "status": "passed",
+        "sourceSha256": "8445a221620fd2899fc661d3eada35fb8bda6c1248341e5a531e1683c48236ee",
+        "command": "node verify.mjs --stage aligned",
+        "testCount": 11,
+        "passed": 11,
+        "failed": 0,
+        "cases": [
+          {
+            "id": "pricing-normal",
+            "name": "3 枚の料金と 10% 割引",
+            "title": "3 枚の料金と 10% 割引",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-empty",
+            "name": "料金計算は空配列を 0 円とする",
+            "title": "料金計算は空配列を 0 円とする",
+            "status": "passed",
+            "input": {
+              "lines": [],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 0,
+              "discount": 0,
+              "total": 0,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-rounded-discount",
+            "name": "円単位で割引を丸める",
+            "title": "円単位で割引を丸める",
+            "status": "passed",
+            "input": {
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 101,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.15
+            },
+            "expected": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "actual": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "observed": {
+              "subtotal": 101,
+              "discount": 15,
+              "total": 86,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "pricing-style-equivalence",
+            "name": "reduce / for を 80 組の入力で照合",
+            "title": "reduce / for を 80 組の入力で照合",
+            "status": "passed",
+            "input": {
+              "unitPrices": [
+                0,
+                1,
+                101,
+                8500
+              ],
+              "quantities": [
+                0,
+                1,
+                2,
+                9
+              ],
+              "discountRates": [
+                0,
+                0.1,
+                0.15,
+                0.25,
+                1
+              ]
+            },
+            "expected": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "actual": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "observed": {
+              "checked": 80,
+              "mismatchCount": 0,
+              "mismatches": []
+            },
+            "source": {
+              "file": "src/pricing.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-success-contract",
+            "name": "予約成功の返り値と在庫の減少",
+            "title": "予約成功の返り値と在庫の減少",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": true,
+                "holdId": "hold-1"
+              },
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-refusal-is-atomic",
+            "name": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "title": "途中の券種が不足しても在庫を一部だけ減らさない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 0
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 4,
+                "balcony": 0
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "inventory-aggregates-duplicate-sku",
+            "name": "同じ券種の複数行を合計して在庫を確認する",
+            "title": "同じ券種の複数行を合計して在庫を確認する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 3
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                }
+              ]
+            },
+            "expected": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "actual": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "observed": {
+              "reservation": {
+                "ok": false,
+                "holdId": null
+              },
+              "remaining": {
+                "floor": 3
+              }
+            },
+            "source": {
+              "file": "src/inventory.js",
+              "startLine": 2,
+              "endLine": 2
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-success",
+            "name": "在庫があれば一度だけ料金計算して確定する",
+            "title": "在庫があれば一度だけ料金計算して確定する",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "actual": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "observed": {
+              "result": {
+                "status": "confirmed",
+                "subtotal": 32500,
+                "discount": 3250,
+                "total": 29250,
+                "currency": "JPY"
+              },
+              "pricingCalls": 1,
+              "remaining": {
+                "floor": 2,
+                "balcony": 1
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-default-price",
+            "name": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "title": "計測用の差し替えをしない既定の quote でも同じ結果になる",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 4,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "actual": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "observed": {
+              "status": "confirmed",
+              "subtotal": 32500,
+              "discount": 3250,
+              "total": 29250,
+              "currency": "JPY"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 6,
+              "endLine": 6
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-rejects-insufficient-stock",
+            "name": "在庫不足では成功扱いにしない",
+            "title": "在庫不足では成功扱いにしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "status": "sold-out"
+            },
+            "actual": {
+              "status": "sold-out"
+            },
+            "observed": {
+              "status": "sold-out"
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 7,
+              "endLine": 7
+            },
+            "failure": null
+          },
+          {
+            "id": "checkout-skips-pricing-after-refusal",
+            "name": "予約拒否の後に不要な料金計算をしない",
+            "title": "予約拒否の後に不要な料金計算をしない",
+            "status": "passed",
+            "input": {
+              "stock": {
+                "floor": 1,
+                "balcony": 2
+              },
+              "lines": [
+                {
+                  "sku": "floor",
+                  "unitPrice": 12000,
+                  "quantity": 2
+                },
+                {
+                  "sku": "balcony",
+                  "unitPrice": 8500,
+                  "quantity": 1
+                }
+              ],
+              "discountRate": 0.1
+            },
+            "expected": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "actual": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "observed": {
+              "pricingCalls": 0,
+              "remaining": {
+                "floor": 1,
+                "balcony": 2
+              }
+            },
+            "source": {
+              "file": "src/checkout.js",
+              "startLine": 10,
+              "endLine": 10
+            },
+            "failure": null
+          }
+        ]
+      }
+    },
+    "invariants": {
+      "pricingEquivalenceCasesPerStage": 80,
+      "callerUnchangedFromBaseToDraft": true,
+      "pricingUnchangedFromDraftToAligned": true,
+      "inventoryUnchangedFromDraftToAligned": true,
+      "repairChangedFileCount": 1,
+      "repairChangedLineCount": 1,
+      "repair": [
+        {
+          "line": 7,
+          "before": "  if (!reservation) {",
+          "after": "  if (!reservation.ok) {"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "format": "soundcoding-review-scenes/1",
+  "scenes": [
+    {
+      "id": "delivery-route",
+      "title": "依頼は、どちらの相手へ",
+      "request": "架空の配送担当・ユイからの依頼：「急ぎの配送に対応する変更を、一緒に見てください。」",
+      "description": "両版に同じ二つの配送計画関数を置き、呼び出す側の一行だけを変更する。どちらも意図した動作で、不具合の正解例ではない。",
+      "before": {
+        "src/channels.js": "export function planStandard(parcel) {\n  return { service: \"standard\", parcelId: parcel.id, dueDays: 3 };\n}\n\nexport function planExpress(parcel) {\n  return { service: \"express\", parcelId: parcel.id, dueDays: 1 };\n}\n",
+        "src/delivery.js": "import { planStandard, planExpress } from \"./channels.js\";\n\nexport function prepareDelivery(parcel) {\n  return planStandard(parcel);\n}\n"
+      },
+      "after": {
+        "src/channels.js": "export function planStandard(parcel) {\n  return { service: \"standard\", parcelId: parcel.id, dueDays: 3 };\n}\n\nexport function planExpress(parcel) {\n  return { service: \"express\", parcelId: parcel.id, dueDays: 1 };\n}\n",
+        "src/delivery.js": "import { planStandard, planExpress } from \"./channels.js\";\n\nexport function prepareDelivery(parcel) {\n  return planExpress(parcel);\n}\n"
+      }
+    },
+    {
+      "id": "session-total",
+      "title": "同じ仕事、違う節回し",
+      "request": "架空の運営担当・アキからの依頼：「集計の書き方を変えました。この仕事の流れを一緒に見てください。」",
+      "description": "reduce を for…of に書き換える。呼ぶ相手と呼ぶ側は同じ。有限の入力で結果の一致を確認する。",
+      "before": {
+        "src/report.js": "import { totalMinutes } from \"./totals.js\";\n\nexport function makeReport(sessions) {\n  return { minutes: totalMinutes(sessions), count: sessions.length };\n}\n",
+        "src/totals.js": "export function totalMinutes(sessions) {\n  return sessions.reduce((total, session) => total + session.minutes, 0);\n}\n"
+      },
+      "after": {
+        "src/report.js": "import { totalMinutes } from \"./totals.js\";\n\nexport function makeReport(sessions) {\n  return { minutes: totalMinutes(sessions), count: sessions.length };\n}\n",
+        "src/totals.js": "export function totalMinutes(sessions) {\n  let total = 0;\n  for (const session of sessions) {\n    total += session.minutes;\n  }\n  return total;\n}\n"
+      }
+    },
+    {
+      "id": "profile-presence",
+      "title": "見つかったことと、状態は別",
+      "request": "架空の画面担当・ソラからの依頼：「表示処理を整えました。プロフィールの扱いを見てください。」",
+      "description": "object または null を返す検索の存在確認は正常。online:false のオブジェクトも見つかった結果として使う。afterはコメント・空白だけの変更。",
+      "before": {
+        "src/caption.js": "import { findProfile } from \"./profiles.js\";\n\nexport function profileCaption(id) {\n  const profile = findProfile(id);\n  if (!profile) return \"Not found\";\n  return profile.displayName;\n}\n",
+        "src/profiles.js": "export function findProfile(id) {\n  if (id === \"local\") {\n    return { displayName: \"Local profile\", online: false };\n  }\n  if (id === \"guest\") {\n    return { displayName: \"Guest profile\", online: true };\n  }\n  return null;\n}\n"
+      },
+      "after": {
+        "src/caption.js": "import { findProfile } from \"./profiles.js\";\n\n// Online state is a display attribute, not evidence that lookup succeeded.\nexport function profileCaption(id)\n{\n  const profile = findProfile(id);\n  if (!profile) return \"Not found\";\n\n  return profile.displayName;\n}\n",
+        "src/profiles.js": "export function findProfile(id) {\n  if (id === \"local\") {\n    return { displayName: \"Local profile\", online: false };\n  }\n  if (id === \"guest\") {\n    return { displayName: \"Guest profile\", online: true };\n  }\n  return null;\n}\n"
+      }
+    }
+  ]
+}
