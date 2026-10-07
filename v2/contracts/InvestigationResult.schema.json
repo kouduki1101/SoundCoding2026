@@ -1,0 +1,751 @@
+{
+  "$defs": {
+    "DesignComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "pattern_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Pattern Id",
+          "type": "string"
+        },
+        "reference_unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Reference Unit Id",
+          "type": "string"
+        },
+        "reference_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "reference_evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Reference Evidence Ids",
+          "type": "array"
+        },
+        "observed_difference": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observed Difference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pattern_id",
+        "reference_unit_id",
+        "reference_span",
+        "reference_evidence_ids",
+        "observed_difference"
+      ],
+      "title": "DesignComparison",
+      "type": "object"
+    },
+    "DesignPattern": {
+      "additionalProperties": false,
+      "properties": {
+        "pattern_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Pattern Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 48,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "domain_rule",
+            "responsibility",
+            "layer_boundary",
+            "dependency_direction",
+            "error_strategy",
+            "naming"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "scope_note": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Scope Note",
+          "type": "string"
+        },
+        "peer_unit_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 2,
+          "title": "Peer Unit Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "exceptions": {
+          "items": {
+            "$ref": "#/$defs/PatternException"
+          },
+          "maxItems": 6,
+          "title": "Exceptions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "pattern_id",
+        "label",
+        "kind",
+        "description",
+        "scope_note",
+        "peer_unit_ids",
+        "evidence_ids"
+      ],
+      "title": "DesignPattern",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "projection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Projection Sha256",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "code",
+            "test",
+            "document"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "created_by_tool_event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Created By Tool Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "snapshot_id",
+        "span",
+        "projection_sha256",
+        "source_kind",
+        "observation",
+        "created_by_tool_event_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "finding_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "concern",
+            "justified_difference",
+            "inconclusive",
+            "no_specific_concern"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 180,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "justification": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Justification",
+          "type": "string"
+        },
+        "limitation": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Limitation"
+        },
+        "discussion_question": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Discussion Question"
+        },
+        "review_axis": {
+          "default": "coherence",
+          "enum": [
+            "correctness",
+            "quality",
+            "coherence"
+          ],
+          "title": "Review Axis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "verdict",
+        "summary",
+        "evidence_ids",
+        "justification"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Hypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "counter_question": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Counter Question",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "open",
+            "supported",
+            "rejected",
+            "undetermined"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "statement",
+        "counter_question",
+        "evidence_ids",
+        "status"
+      ],
+      "title": "Hypothesis",
+      "type": "object"
+    },
+    "PatternException": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "reason",
+        "evidence_ids"
+      ],
+      "title": "PatternException",
+      "type": "object"
+    },
+    "Reclassification": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "from_responsibility_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "From Responsibility Id",
+          "type": "string"
+        },
+        "to_responsibility_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "To Responsibility Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "reason": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "from_responsibility_id",
+        "to_responsibility_id",
+        "evidence_ids",
+        "reason"
+      ],
+      "title": "Reclassification",
+      "type": "object"
+    },
+    "Responsibility": {
+      "additionalProperties": false,
+      "properties": {
+        "responsibility_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Responsibility Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 24,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "definition": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Definition",
+          "type": "string"
+        },
+        "change_reason": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Change Reason",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "motif_id": {
+          "enum": [
+            "M0",
+            "M1",
+            "M2",
+            "M3",
+            "M4",
+            "M5"
+          ],
+          "title": "Motif Id",
+          "type": "string"
+        },
+        "display_order": {
+          "minimum": 0,
+          "title": "Display Order",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "responsibility_id",
+        "label",
+        "definition",
+        "change_reason",
+        "evidence_ids",
+        "motif_id",
+        "display_order"
+      ],
+      "title": "Responsibility",
+      "type": "object"
+    },
+    "ReviewSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "signal_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Signal Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "policy_scattering",
+            "responsibility_mixing",
+            "change_coupling",
+            "data_flow_opacity",
+            "justified_boundary",
+            "implementation_risk"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "review_axis": {
+          "default": "coherence",
+          "enum": [
+            "correctness",
+            "quality",
+            "coherence"
+          ],
+          "title": "Review Axis",
+          "type": "string"
+        },
+        "comparison": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DesignComparison"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "human_review_required": {
+          "default": false,
+          "title": "Human Review Required",
+          "type": "boolean"
+        },
+        "human_review_reason": {
+          "default": "",
+          "maxLength": 160,
+          "title": "Human Review Reason",
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "concern",
+            "justified",
+            "inconclusive"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 48,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "explanation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "alternative": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Alternative",
+          "type": "string"
+        },
+        "counter_explanation": {
+          "default": "",
+          "maxLength": 800,
+          "title": "Counter Explanation",
+          "type": "string"
+        },
+        "counter_status": {
+          "default": "not_checked",
+          "enum": [
+            "not_checked",
+            "supported",
+            "rejected",
+            "undetermined"
+          ],
+          "title": "Counter Status",
+          "type": "string"
+        },
+        "change_scenario": {
+          "default": "",
+          "maxLength": 800,
+          "title": "Change Scenario",
+          "type": "string"
+        },
+        "alternative_evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Alternative Evidence Ids",
+          "type": "array"
+        },
+        "unit_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Unit Ids",
+          "type": "array"
+        },
+        "event_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Event Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "signal_id",
+        "category",
+        "verdict",
+        "label",
+        "explanation",
+        "alternative",
+        "unit_ids",
+        "event_ids",
+        "evidence_ids"
+      ],
+      "title": "ReviewSignal",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "File Id",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file_id",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Span",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "replaced_signal_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 96,
+      "title": "Replaced Signal Ids",
+      "type": "array"
+    },
+    "review_signals": {
+      "items": {
+        "$ref": "#/$defs/ReviewSignal"
+      },
+      "maxItems": 6,
+      "title": "Review Signals",
+      "type": "array"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Findings",
+      "type": "array"
+    },
+    "hypotheses": {
+      "items": {
+        "$ref": "#/$defs/Hypothesis"
+      },
+      "maxItems": 16,
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "suggested_reclassification": {
+      "items": {
+        "$ref": "#/$defs/Reclassification"
+      },
+      "maxItems": 96,
+      "title": "Suggested Reclassification",
+      "type": "array"
+    },
+    "new_responsibilities": {
+      "items": {
+        "$ref": "#/$defs/Responsibility"
+      },
+      "maxItems": 6,
+      "title": "New Responsibilities",
+      "type": "array"
+    },
+    "design_patterns": {
+      "items": {
+        "$ref": "#/$defs/DesignPattern"
+      },
+      "maxItems": 4,
+      "title": "Design Patterns",
+      "type": "array"
+    },
+    "investigation_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "base_analysis_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Base Analysis Id",
+      "type": "string"
+    },
+    "selected_unit_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 96,
+      "title": "Selected Unit Ids",
+      "type": "array"
+    },
+    "selected_event_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 96,
+      "title": "Selected Event Ids",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    }
+  },
+  "required": [
+    "findings",
+    "hypotheses",
+    "investigation_id",
+    "base_analysis_id",
+    "selected_unit_ids",
+    "selected_event_ids",
+    "evidence"
+  ],
+  "title": "InvestigationResult",
+  "type": "object"
+}

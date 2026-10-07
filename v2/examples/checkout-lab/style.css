@@ -1,0 +1,378 @@
+:root {
+  font-family: Inter, system-ui, 'Noto Sans JP', sans-serif;
+  color: #242820;
+  background: #f6f5f0;
+  font-size: 14px;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+header {
+  height: 90px;
+  border-bottom: 1px solid #dedfd6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1440px;
+  padding: 0 48px;
+  margin: auto;
+}
+header a {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: inherit;
+}
+header a span {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+  color: #747b69;
+}
+.label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #737c69;
+}
+main {
+  max-width: 1440px;
+  padding: 40px 48px;
+  margin: auto;
+}
+.intro {
+  margin-bottom: 35px;
+}
+.intro h1 {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.04em;
+  margin: 12px 0;
+}
+.intro p {
+  color: #69725e;
+  font-size: 12px;
+  line-height: 1.9;
+}
+form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 36px;
+  align-items: start;
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.object {
+  height: 210px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: #e9eadf;
+  border-radius: 4px;
+}
+.object span {
+  position: absolute;
+  bottom: 13px;
+  left: 14px;
+  font-size: 10px;
+  color: #747b69;
+}
+.object i {
+  font-style: normal;
+}
+.book i {
+  background: #68715c;
+  color: #e5e2cb;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.5;
+  width: 112px;
+  height: 158px;
+  padding: 17px;
+  border-left: 7px solid #555e49;
+  transform: rotate(-6deg);
+  box-shadow: 10px 13px 12px #39402d22;
+}
+.print {
+  background: #e8e4db;
+}
+.print i {
+  height: 145px;
+  width: 110px;
+  border: 10px solid #fdfbf5;
+  background:
+    radial-gradient(ellipse at 50% 55%, #9aa086 0 40%, transparent 41%),
+    linear-gradient(145deg, #d7ba97, #ece6ce);
+  box-shadow: 8px 12px 12px #39402d22;
+  transform: rotate(5deg);
+}
+.gift {
+  background: #e2e7e1;
+}
+.gift i {
+  border-radius: 4px;
+  background: #394a3c;
+  color: #cedacb;
+  font-size: 25px;
+  line-height: 1.1;
+  padding: 20px;
+  width: 138px;
+  box-shadow: 8px 12px 12px #39402d22;
+  transform: rotate(-8deg);
+}
+.product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 16px;
+}
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 7px;
+}
+.product-row p {
+  font-size: 10px;
+  color: #747b69;
+  margin: 0 0 15px;
+}
+.product-row b {
+  font-size: 12px;
+  font-weight: 500;
+}
+article label {
+  font-size: 11px;
+  color: #747b69;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+select,
+button {
+  font: inherit;
+}
+select {
+  border: 1px solid #d6dacb;
+  border-radius: 4px;
+  background: #fafbf6;
+  padding: 7px 9px;
+  color: inherit;
+}
+.checkout {
+  background: #fff;
+  padding: 24px;
+  border: 1px solid #e0e3d7;
+  border-radius: 6px;
+}
+.checkout h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 10px 0 25px;
+}
+.coupon-label {
+  font-size: 11px;
+  display: grid;
+  gap: 8px;
+}
+#coupon-state {
+  font-size: 10px;
+  line-height: 1.6;
+  color: #69725e;
+  min-height: 30px;
+}
+.member-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 15px 0;
+}
+input {
+  accent-color: #4e6346;
+}
+dl {
+  margin: 20px 0;
+}
+dl div {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 12px;
+}
+dd {
+  margin: 0;
+}
+.total {
+  border-top: 1px solid #e2e4dc;
+  padding-top: 16px;
+  font-size: 19px;
+  font-weight: 500;
+}
+button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 4px;
+  background: #3e5036;
+  color: #fff;
+  padding: 14px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+button:hover:not(:disabled) {
+  background: #2d4024;
+}
+button:active {
+  transform: translateY(1px);
+}
+:focus-visible {
+  outline: 2px solid #627f4d;
+  outline-offset: 3px;
+}
+.checkout small {
+  display: block;
+  font-size: 9px;
+  line-height: 1.8;
+  color: #858b7c;
+  margin-top: 12px;
+}
+#message {
+  font-size: 11px;
+  line-height: 1.8;
+  white-space: pre-line;
+  color: #3e5036;
+}
+.history {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 36px;
+  margin-top: 44px;
+  padding-top: 25px;
+  border-top: 1px solid #dedfd6;
+}
+.history h2 {
+  margin-top: 9px;
+}
+.history p {
+  font-size: 11px;
+  color: #747b69;
+}
+.history ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.history li {
+  border-bottom: 1px solid #e0e2d8;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 11px;
+}
+.history li span {
+  color: #747b69;
+}
+.source-info {
+  font-size: 11px;
+  color: #747b69;
+  line-height: 1.9;
+  margin-top: 32px;
+}
+.source-info summary {
+  cursor: pointer;
+}
+.source-info nav {
+  display: flex;
+  gap: 20px;
+}
+.source-info a {
+  color: #4e6346;
+}
+@media (max-width: 1000px) {
+  header {
+    padding: 0 25px;
+  }
+  main {
+    padding: 30px 25px;
+  }
+  form {
+    grid-template-columns: minmax(0, 1fr) 270px;
+    gap: 22px;
+  }
+  .products {
+    gap: 10px;
+  }
+  .object {
+    height: 165px;
+  }
+  .object i {
+    transform: scale(0.8);
+  }
+  .product-row {
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 0;
+  }
+  .product-row b {
+    margin-bottom: 12px;
+  }
+}
+@media (max-width: 700px) {
+  header {
+    height: 75px;
+    padding: 0 18px;
+  }
+  header > .label {
+    display: none;
+  }
+  main {
+    padding: 25px 18px;
+  }
+  .intro h1 {
+    font-size: 29px;
+  }
+  form {
+    grid-template-columns: 1fr;
+  }
+  .object {
+    height: 150px;
+  }
+  .products {
+    gap: 8px;
+  }
+  .object i {
+    transform: scale(0.7);
+  }
+  .product-row p {
+    display: none;
+  }
+  .product-row h2 {
+    font-size: 12px;
+  }
+  .history {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .history li {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

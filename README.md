@@ -4,6 +4,14 @@
 
 [公開デモ](https://soundcoding-ensemble.kouduki.chatgpt.site/) · [変換ルールとAPI](docs/MAPPING.md) · [3分デモ](docs/DEMO.md) · [設計レビュー・実装検証の記録](docs/REVIEW.md)
 
+## v2: PRリハーサル
+
+[v2の公開デモ](https://code-groove-rehearsal-2026.kouduki.chatgpt.site) · [v2の実装と起動方法](v2/README.md)
+
+`v2/` は、Code Grooveを基盤にSoundCoding2026の関数同士の対話とCodelodyの音に同期するコード行を組み合わせた新しいレビューアプリです。最初の画面から窓口を選び、変更前後を約20秒で聴き比べ、根拠コードで確かめたい問いを残せます。現在の公開デモは保存済みのGemini解析を再生します。新しい公開PRのheadを解析するコードは含みますが、ライブ解析にはGoogle Cloudへの別途配備が必要です。
+
+このルートのアプリはv1として残します。v2をローカルで起動するには `cd v2` の後に `pnpm install --frozen-lockfile`、`pnpm build:static`、`pnpm preview:static` を実行してください。
+
 ## はじめる
 
 Node.js と Python 3 を使い、このディレクトリで実行します。

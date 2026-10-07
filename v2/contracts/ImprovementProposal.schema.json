@@ -1,0 +1,233 @@
+{
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "projection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Projection Sha256",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "code",
+            "test",
+            "document"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "created_by_tool_event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Created By Tool Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "snapshot_id",
+        "span",
+        "projection_sha256",
+        "source_kind",
+        "observation",
+        "created_by_tool_event_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "SourceEdit": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "before": {
+          "maxLength": 12000,
+          "title": "Before",
+          "type": "string"
+        },
+        "after": {
+          "maxLength": 16000,
+          "minLength": 1,
+          "title": "After",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "before",
+        "after"
+      ],
+      "title": "SourceEdit",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "File Id",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file_id",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Span",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "rationale": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "tradeoffs": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Tradeoffs",
+      "type": "string"
+    },
+    "verification": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Verification",
+      "type": "string"
+    },
+    "signal_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 96,
+      "title": "Signal Ids",
+      "type": "array"
+    },
+    "evidence_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 96,
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "edits": {
+      "items": {
+        "$ref": "#/$defs/SourceEdit"
+      },
+      "maxItems": 6,
+      "minItems": 1,
+      "title": "Edits",
+      "type": "array"
+    },
+    "proposal_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Proposal Id",
+      "type": "string"
+    },
+    "base_analysis_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Base Analysis Id",
+      "type": "string"
+    },
+    "base_snapshot_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Base Snapshot Id",
+      "type": "string"
+    },
+    "source_hash": {
+      "title": "Source Hash",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "diff": {
+      "maxLength": 64000,
+      "title": "Diff",
+      "type": "string"
+    },
+    "status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "accepted",
+        "rejected"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "rationale",
+    "tradeoffs",
+    "verification",
+    "signal_ids",
+    "evidence_ids",
+    "edits",
+    "proposal_id",
+    "base_analysis_id",
+    "base_snapshot_id",
+    "source_hash",
+    "evidence",
+    "diff"
+  ],
+  "title": "ImprovementProposal",
+  "type": "object"
+}

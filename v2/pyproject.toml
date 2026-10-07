@@ -1,0 +1,48 @@
+[project]
+name = "code-groove"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic-settings",
+  "google-genai",
+  "firebase-admin",
+  "google-cloud-firestore",
+  "google-cloud-storage",
+  "google-cloud-tasks",
+  "httpx",
+    "google-adk==2.11.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+    "mypy",
+    "numpy",
+    "scipy",
+    "imageio-ffmpeg>=0.6.0",
+    "pillow>=12.3.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["apps/backend", "."]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["live: real paid model calls (opt-in)"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+check_untyped_defs = true
+disallow_incomplete_defs = true
+exclude = ["scripts", "tests"]

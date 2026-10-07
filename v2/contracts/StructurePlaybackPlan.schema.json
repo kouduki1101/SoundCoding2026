@@ -1,0 +1,210 @@
+{
+  "$defs": {
+    "CallPhrase": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "identity": {
+          "enum": [
+            "static_target",
+            "same_expression"
+          ],
+          "title": "Identity",
+          "type": "string"
+        },
+        "midi": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "Midi",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "identity",
+        "midi"
+      ],
+      "title": "CallPhrase",
+      "type": "object"
+    },
+    "StructureSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "title": "Index",
+          "type": "integer"
+        },
+        "start_row": {
+          "title": "Start Row",
+          "type": "integer"
+        },
+        "end_row": {
+          "title": "End Row",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "tones": {
+          "items": {
+            "$ref": "#/$defs/StructureTone"
+          },
+          "title": "Tones",
+          "type": "array"
+        }
+      },
+      "required": [
+        "index",
+        "start_row",
+        "end_row",
+        "duration_ms",
+        "tones"
+      ],
+      "title": "StructureSegment",
+      "type": "object"
+    },
+    "StructureTone": {
+      "additionalProperties": false,
+      "properties": {
+        "at_ms": {
+          "minimum": 0,
+          "title": "At Ms",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "midi": {
+          "maximum": 127,
+          "minimum": 0,
+          "title": "Midi",
+          "type": "integer"
+        },
+        "side": {
+          "enum": [
+            "A",
+            "B"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Event Id"
+        },
+        "row_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "structure",
+            "difference_marker",
+            "absent",
+            "unknown",
+            "unsupported"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "at_ms",
+        "duration_ms",
+        "midi",
+        "side",
+        "event_id",
+        "row_id",
+        "role"
+      ],
+      "title": "StructureTone",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "encoding_version": {
+      "const": "structure-neutral-v1",
+      "default": "structure-neutral-v1",
+      "title": "Encoding Version",
+      "type": "string"
+    },
+    "dictionary_version": {
+      "const": "sorted-call-pairs-v1",
+      "default": "sorted-call-pairs-v1",
+      "title": "Dictionary Version",
+      "type": "string"
+    },
+    "sound_version": {
+      "const": "sine-envelope-v1",
+      "default": "sine-envelope-v1",
+      "title": "Sound Version",
+      "type": "string"
+    },
+    "dictionary_limit": {
+      "const": 4,
+      "default": 4,
+      "title": "Dictionary Limit",
+      "type": "integer"
+    },
+    "dictionary": {
+      "items": {
+        "$ref": "#/$defs/CallPhrase"
+      },
+      "title": "Dictionary",
+      "type": "array"
+    },
+    "markers": {
+      "title": "Markers",
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "dictionary_overflow",
+        "extraction_unavailable",
+        "empty"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "segments": {
+      "items": {
+        "$ref": "#/$defs/StructureSegment"
+      },
+      "title": "Segments",
+      "type": "array"
+    },
+    "score_hash": {
+      "title": "Score Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dictionary",
+    "markers",
+    "status",
+    "segments",
+    "score_hash"
+  ],
+  "title": "StructurePlaybackPlan",
+  "type": "object"
+}

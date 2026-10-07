@@ -1,0 +1,114 @@
+:root {
+  --bg: #f7f8fa;
+  --surface: #fff;
+  --line: #e7e9ee;
+  --text: #242733;
+  --muted: #697180;
+  --accent: #5563ce;
+  --warning: #b66b18;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Noto Sans JP',
+    sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+button:hover {
+  background: #f0f2f7;
+}
+button:active {
+  transform: translateY(1px);
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+button[aria-pressed='true'] {
+  background: #eef0ff;
+  color: #4451bd;
+  border-color: #cbd1f7;
+}
+button.primary,
+.play-button {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+button.primary:hover,
+.play-button:hover {
+  background: #4654bf;
+}
+.wide {
+  width: 100%;
+}
+small,
+.muted {
+  color: var(--muted);
+}
+small {
+  font-size: 11px;
+}
+p {
+  line-height: 1.8;
+}
+input:not([type='range']):not([type='checkbox']) {
+  width: 100%;
+  border: 1px solid #d9dee8;
+  background: white;
+  color: var(--text);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+input[type='range'],
+input[type='checkbox'] {
+  accent-color: var(--accent);
+}
+summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11px;
+}
+a {
+  color: var(--accent);
+}

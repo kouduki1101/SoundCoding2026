@@ -1,0 +1,5037 @@
+{
+  "map": {
+    "schema_version": "1.0",
+    "analysis_id": "analysis_mixed",
+    "project_id": "sample-mixed",
+    "snapshot_id": "snapshot_mixed",
+    "origin": "fixture",
+    "profile": {
+      "title": "混ざった返金設計",
+      "purpose": "一つの実装に、条件・計算・通知が重なる。",
+      "assumptions": [
+        "返金ルールを比較するための小さな手作業サンプル"
+      ],
+      "unknowns": [
+        "実モデルによる調査は未実施"
+      ]
+    },
+    "responsibilities": [
+      {
+        "responsibility_id": "r0",
+        "label": "返金条件",
+        "definition": "返金条件を決める独立した判断",
+        "change_reason": "返金可能な契約条件が変わるとき",
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "motif_id": "M0",
+        "display_order": 0
+      },
+      {
+        "responsibility_id": "r1",
+        "label": "返金額",
+        "definition": "返金額を決める独立した判断",
+        "change_reason": "手数料・返金額の計算規則が変わるとき",
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "motif_id": "M1",
+        "display_order": 1
+      },
+      {
+        "responsibility_id": "r2",
+        "label": "通知内容",
+        "definition": "通知内容を決める独立した判断",
+        "change_reason": "顧客への伝え方が変わるとき",
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "motif_id": "M2",
+        "display_order": 2
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "unit_processRefund",
+        "label": "processRefund",
+        "primary_span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 1,
+          "end_line": 13
+        },
+        "member_symbol_ids": [],
+        "role": "adapter",
+        "review_state": "inspected",
+        "boundary_reason": "関数の本文が判断を所有する",
+        "evidence_ids": [
+          "evidence_0"
+        ]
+      },
+      {
+        "unit_id": "unit_previewRefund",
+        "label": "previewRefund",
+        "primary_span": {
+          "file_id": "file_1",
+          "path": "src/refund-preview.ts",
+          "start_line": 1,
+          "end_line": 8
+        },
+        "member_symbol_ids": [],
+        "role": "adapter",
+        "review_state": "inspected",
+        "boundary_reason": "関数の本文が判断を所有する",
+        "evidence_ids": [
+          "evidence_1"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "event_id": "event_0_0",
+        "concept_key": "r0_購入から30日以内",
+        "label": "購入から30日以内",
+        "meaning": "購入から30日以内",
+        "responsibility_id": "r0",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 0,
+        "kind": "decision",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 5,
+          "end_line": 5
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_1",
+        "concept_key": "r0_商品条件と購入証明",
+        "label": "商品条件と購入証明",
+        "meaning": "商品条件と購入証明",
+        "responsibility_id": "r0",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 1,
+        "kind": "decision",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 6,
+          "end_line": 6
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_2",
+        "concept_key": "r0_返金可否を決める",
+        "label": "返金可否を決める",
+        "meaning": "返金可否を決める",
+        "responsibility_id": "r0",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 2,
+        "kind": "decision",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 7,
+          "end_line": 7
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_3",
+        "concept_key": "r1_手数料を計算",
+        "label": "手数料を計算",
+        "meaning": "手数料を計算",
+        "responsibility_id": "r1",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 0,
+        "kind": "calculation",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 8,
+          "end_line": 8
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_4",
+        "concept_key": "r1_返金額を計算",
+        "label": "返金額を計算",
+        "meaning": "返金額を計算",
+        "responsibility_id": "r1",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 1,
+        "kind": "calculation",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 9,
+          "end_line": 9
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_5",
+        "concept_key": "r2_宛名を決める",
+        "label": "宛名を決める",
+        "meaning": "宛名を決める",
+        "responsibility_id": "r2",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 0,
+        "kind": "update",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 10,
+          "end_line": 10
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_6",
+        "concept_key": "r2_通知本文を作る",
+        "label": "通知本文を作る",
+        "meaning": "通知本文を作る",
+        "responsibility_id": "r2",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 1,
+        "kind": "update",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 11,
+          "end_line": 11
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_0_7",
+        "concept_key": "r2_返金結果を組み立てる",
+        "label": "返金結果を組み立てる",
+        "meaning": "返金結果を組み立てる",
+        "responsibility_id": "r2",
+        "unit_id": "unit_processRefund",
+        "semantic_order": 2,
+        "kind": "update",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 12,
+          "end_line": 12
+        },
+        "evidence_ids": [
+          "evidence_0"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_1_0",
+        "concept_key": "r0_購入から30日以内",
+        "label": "購入から30日以内",
+        "meaning": "購入から30日以内",
+        "responsibility_id": "r0",
+        "unit_id": "unit_previewRefund",
+        "semantic_order": 3,
+        "kind": "decision",
+        "span": {
+          "file_id": "file_1",
+          "path": "src/refund-preview.ts",
+          "start_line": 5,
+          "end_line": 5
+        },
+        "evidence_ids": [
+          "evidence_1"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_1_1",
+        "concept_key": "r1_返金額を計算",
+        "label": "返金額を計算",
+        "meaning": "返金額を計算",
+        "responsibility_id": "r1",
+        "unit_id": "unit_previewRefund",
+        "semantic_order": 2,
+        "kind": "calculation",
+        "span": {
+          "file_id": "file_1",
+          "path": "src/refund-preview.ts",
+          "start_line": 6,
+          "end_line": 6
+        },
+        "evidence_ids": [
+          "evidence_1"
+        ],
+        "state": "grounded"
+      },
+      {
+        "event_id": "event_1_2",
+        "concept_key": "r2_通知プレビュー",
+        "label": "通知プレビュー",
+        "meaning": "通知プレビュー",
+        "responsibility_id": "r2",
+        "unit_id": "unit_previewRefund",
+        "semantic_order": 3,
+        "kind": "update",
+        "span": {
+          "file_id": "file_1",
+          "path": "src/refund-preview.ts",
+          "start_line": 7,
+          "end_line": 7
+        },
+        "evidence_ids": [
+          "evidence_1"
+        ],
+        "state": "grounded"
+      }
+    ],
+    "hypotheses": [],
+    "review_signals": [],
+    "evidence": [
+      {
+        "evidence_id": "evidence_0",
+        "snapshot_id": "snapshot_mixed",
+        "span": {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 1,
+          "end_line": 13
+        },
+        "projection_sha256": "aa777955a03d2fcf10543e99377ab2f640344e0e86d79d10b6ce9b2c9c14e662",
+        "source_kind": "code",
+        "observation": "processRefund の判断・計算の本文（手作業サンプル）",
+        "created_by_tool_event_id": "fixture_0"
+      },
+      {
+        "evidence_id": "evidence_1",
+        "snapshot_id": "snapshot_mixed",
+        "span": {
+          "file_id": "file_1",
+          "path": "src/refund-preview.ts",
+          "start_line": 1,
+          "end_line": 8
+        },
+        "projection_sha256": "2be39426f0fc622f4e5e409973dc493b0f2e2aa975afc5bdedb0574858f33e62",
+        "source_kind": "code",
+        "observation": "previewRefund の判断・計算の本文（手作業サンプル）",
+        "created_by_tool_event_id": "fixture_1"
+      }
+    ],
+    "coverage": {
+      "indexed_source_files": 2,
+      "eligible_source_files": 2,
+      "indexed_units": 2,
+      "inspected_units": 2,
+      "unresolved_unit_ids": [],
+      "excluded_paths": [],
+      "inspected_line_ranges": [
+        {
+          "file_id": "file_0",
+          "path": "src/refund-service.ts",
+          "start_line": 1,
+          "end_line": 13
+        },
+        {
+          "file_id": "file_1",
+          "path": "src/refund-preview.ts",
+          "start_line": 1,
+          "end_line": 8
+        }
+      ]
+    },
+    "model_id": "fixture (no model calls)",
+    "prompt_version": "fixture-v1",
+    "created_at": "2026-10-02T00:00:00Z"
+  },
+  "score": {
+    "analysis_id": "analysis_mixed",
+    "score_hash": "60ff00ec7366e5f69836230dde02c48203398dfab0974e2ea36ff934f065f872",
+    "scenes": [
+      {
+        "scene_id": "scene_1",
+        "unit_ids": [
+          "unit_previewRefund",
+          "unit_processRefund"
+        ],
+        "theme": {
+          "scene_id": "scene_1",
+          "grammar_version": "groove-chamber-v10",
+          "kit_id": "midnight-jazz-v4",
+          "kit_hash": "a302b56825512936a014a556a88819affd50de65c9d68ff3acb544702dc919f7",
+          "bpm": 96,
+          "beats_per_bar": 4,
+          "steps_per_bar": 16,
+          "ppq": 480,
+          "mode": "theme",
+          "total_bars": 10,
+          "phrases": [
+            {
+              "phrase_id": "theme_0",
+              "start_bar": 0,
+              "bar_count": 4,
+              "label": "返金条件",
+              "responsibility_id": "r0"
+            },
+            {
+              "phrase_id": "theme_1",
+              "start_bar": 4,
+              "bar_count": 3,
+              "label": "返金額",
+              "responsibility_id": "r1"
+            },
+            {
+              "phrase_id": "theme_2",
+              "start_bar": 7,
+              "bar_count": 3,
+              "label": "通知内容",
+              "responsibility_id": "r2"
+            }
+          ],
+          "notes": [
+            {
+              "note_id": "bass_0_0",
+              "kind": "accompaniment",
+              "tick": 0,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_0_0",
+              "kind": "accompaniment",
+              "tick": 0,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r0_0",
+              "kind": "accompaniment",
+              "tick": 0,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_0",
+              "kind": "data",
+              "event_id": "event_0_0",
+              "responsibility_id": "r0",
+              "unit_id": "unit_processRefund",
+              "duration_ms": 650,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.58,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "tick": 0
+            },
+            {
+              "note_id": "chord_0_0_1",
+              "kind": "accompaniment",
+              "tick": 7,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_0_2",
+              "kind": "accompaniment",
+              "tick": 14,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_0_3",
+              "kind": "accompaniment",
+              "tick": 21,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_0_1",
+              "kind": "accompaniment",
+              "tick": 480,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r0_1",
+              "kind": "accompaniment",
+              "tick": 480,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_0_r0_2",
+              "kind": "accompaniment",
+              "tick": 800,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_0_2",
+              "kind": "accompaniment",
+              "tick": 960,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_0",
+              "kind": "accompaniment",
+              "tick": 1200,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_1",
+              "kind": "accompaniment",
+              "tick": 1207,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_2",
+              "kind": "accompaniment",
+              "tick": 1214,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_3",
+              "kind": "accompaniment",
+              "tick": 1221,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_0_3",
+              "kind": "accompaniment",
+              "tick": 1440,
+              "voice": "bass",
+              "midi": 44,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r0_3",
+              "kind": "accompaniment",
+              "tick": 1440,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_1_0",
+              "kind": "accompaniment",
+              "tick": 1920,
+              "voice": "bass",
+              "midi": 33,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_0_0",
+              "kind": "accompaniment",
+              "tick": 1920,
+              "voice": "piano",
+              "midi": 55,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r0_0",
+              "kind": "accompaniment",
+              "tick": 1920,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_2",
+              "kind": "data",
+              "tick": 1920,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.55,
+              "duration_ms": 540,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_1_0_1",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 1927
+            },
+            {
+              "note_id": "chord_1_0_2",
+              "kind": "accompaniment",
+              "tick": 1934,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_0_3",
+              "kind": "accompaniment",
+              "tick": 1941,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_1_1",
+              "kind": "accompaniment",
+              "tick": 2400,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r0_1",
+              "kind": "accompaniment",
+              "tick": 2400,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_1_r0_2",
+              "kind": "accompaniment",
+              "tick": 2720,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_1_2",
+              "kind": "accompaniment",
+              "tick": 2880,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_0",
+              "kind": "accompaniment",
+              "tick": 3120,
+              "voice": "piano",
+              "midi": 55,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_1",
+              "kind": "accompaniment",
+              "tick": 3127,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_2",
+              "kind": "accompaniment",
+              "tick": 3134,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_3",
+              "kind": "accompaniment",
+              "tick": 3141,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_1_3",
+              "kind": "accompaniment",
+              "tick": 3360,
+              "voice": "bass",
+              "midi": 37,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r0_3",
+              "kind": "accompaniment",
+              "tick": 3360,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_2_0",
+              "kind": "accompaniment",
+              "tick": 3840,
+              "voice": "bass",
+              "midi": 38,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_0_0",
+              "kind": "accompaniment",
+              "tick": 3840,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r0_0",
+              "kind": "accompaniment",
+              "tick": 3840,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_1",
+              "kind": "data",
+              "tick": 3840,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_2_0_1",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 3847
+            },
+            {
+              "note_id": "chord_2_0_2",
+              "kind": "accompaniment",
+              "tick": 3854,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_0_3",
+              "kind": "accompaniment",
+              "tick": 3861,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_2_1",
+              "kind": "accompaniment",
+              "tick": 4320,
+              "voice": "bass",
+              "midi": 41,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r0_1",
+              "kind": "accompaniment",
+              "tick": 4320,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_2_r0_2",
+              "kind": "accompaniment",
+              "tick": 4640,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_2_2",
+              "kind": "accompaniment",
+              "tick": 4800,
+              "voice": "bass",
+              "midi": 45,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_0",
+              "kind": "accompaniment",
+              "tick": 5040,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_1",
+              "kind": "accompaniment",
+              "tick": 5047,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_2",
+              "kind": "accompaniment",
+              "tick": 5054,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_3",
+              "kind": "accompaniment",
+              "tick": 5061,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_2_3",
+              "kind": "accompaniment",
+              "tick": 5280,
+              "voice": "bass",
+              "midi": 42,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r0_3",
+              "kind": "accompaniment",
+              "tick": 5280,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_3_0",
+              "kind": "accompaniment",
+              "tick": 5760,
+              "voice": "bass",
+              "midi": 31,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_0_0",
+              "kind": "accompaniment",
+              "tick": 5760,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r0_0",
+              "kind": "accompaniment",
+              "tick": 5760,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_1_0",
+              "kind": "data",
+              "tick": 5760,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "event_id": "event_1_0",
+              "responsibility_id": "r0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_3_0_1",
+              "kind": "accompaniment",
+              "tick": 5767,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_0_2",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 5774
+            },
+            {
+              "note_id": "chord_3_0_3",
+              "kind": "accompaniment",
+              "tick": 5781,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_3_1",
+              "kind": "accompaniment",
+              "tick": 6240,
+              "voice": "bass",
+              "midi": 35,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r0_1",
+              "kind": "accompaniment",
+              "tick": 6240,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r0_2",
+              "kind": "accompaniment",
+              "tick": 6560,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 1000,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_3_2",
+              "kind": "accompaniment",
+              "tick": 6720,
+              "voice": "bass",
+              "midi": 38,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_0",
+              "kind": "accompaniment",
+              "tick": 6960,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 937,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_1",
+              "kind": "accompaniment",
+              "tick": 6967,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 928,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_2",
+              "kind": "accompaniment",
+              "tick": 6974,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 919,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_3",
+              "kind": "accompaniment",
+              "tick": 6981,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 910,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_3_3",
+              "kind": "accompaniment",
+              "tick": 7200,
+              "voice": "bass",
+              "midi": 35,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r0_3",
+              "kind": "accompaniment",
+              "tick": 7200,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_4_0",
+              "kind": "accompaniment",
+              "tick": 7680,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_0_0",
+              "kind": "accompaniment",
+              "tick": 7680,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_0",
+              "kind": "accompaniment",
+              "tick": 7680,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_3",
+              "kind": "data",
+              "tick": 7680,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": 0.2,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_4_0_1",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 7687
+            },
+            {
+              "note_id": "chord_4_0_2",
+              "kind": "accompaniment",
+              "tick": 7694,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_0_3",
+              "kind": "accompaniment",
+              "tick": 7701,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_1",
+              "kind": "accompaniment",
+              "tick": 8000,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_4_1",
+              "kind": "accompaniment",
+              "tick": 8160,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_4_2",
+              "kind": "accompaniment",
+              "tick": 8640,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_2",
+              "kind": "accompaniment",
+              "tick": 8640,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_4_10_0",
+              "kind": "accompaniment",
+              "tick": 8880,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_10_1",
+              "kind": "accompaniment",
+              "tick": 8887,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_10_2",
+              "kind": "accompaniment",
+              "tick": 8894,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_10_3",
+              "kind": "accompaniment",
+              "tick": 8901,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_3",
+              "kind": "accompaniment",
+              "tick": 8960,
+              "voice": "vibes",
+              "midi": 76,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_4_3",
+              "kind": "accompaniment",
+              "tick": 9120,
+              "voice": "bass",
+              "midi": 44,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_5_0",
+              "kind": "accompaniment",
+              "tick": 9600,
+              "voice": "bass",
+              "midi": 33,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_0_0",
+              "kind": "accompaniment",
+              "tick": 9600,
+              "voice": "piano",
+              "midi": 55,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r1_0",
+              "kind": "accompaniment",
+              "tick": 9600,
+              "voice": "vibes",
+              "midi": 74,
+              "variant": 1,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_5_0_1",
+              "kind": "accompaniment",
+              "tick": 9607,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_0_2",
+              "kind": "accompaniment",
+              "tick": 9614,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_0_3",
+              "kind": "accompaniment",
+              "tick": 9621,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r1_1",
+              "kind": "accompaniment",
+              "tick": 9920,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_5_1",
+              "kind": "accompaniment",
+              "tick": 10080,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_5_2",
+              "kind": "accompaniment",
+              "tick": 10560,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r1_2",
+              "kind": "accompaniment",
+              "tick": 10560,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_5_10_0",
+              "kind": "accompaniment",
+              "tick": 10800,
+              "voice": "piano",
+              "midi": 55,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_10_1",
+              "kind": "accompaniment",
+              "tick": 10807,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_10_2",
+              "kind": "accompaniment",
+              "tick": 10814,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_10_3",
+              "kind": "accompaniment",
+              "tick": 10821,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r1_3",
+              "kind": "accompaniment",
+              "tick": 10880,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_5_3",
+              "kind": "accompaniment",
+              "tick": 11040,
+              "voice": "bass",
+              "midi": 37,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "note_event_1_1",
+              "kind": "data",
+              "tick": 11040,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": 0.2,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_6_0",
+              "kind": "accompaniment",
+              "tick": 11520,
+              "voice": "bass",
+              "midi": 38,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_6_0_0",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 11520
+            },
+            {
+              "note_id": "melody_6_r1_0",
+              "kind": "accompaniment",
+              "tick": 11520,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "note_event_0_4",
+              "kind": "data",
+              "tick": 11520,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": 0.2,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_4",
+              "responsibility_id": "r1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_6_0_1",
+              "kind": "accompaniment",
+              "tick": 11527,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_6_0_2",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 11534
+            },
+            {
+              "note_id": "chord_6_0_3",
+              "kind": "accompaniment",
+              "tick": 11541,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_6_r1_1",
+              "kind": "accompaniment",
+              "tick": 11840,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_6_1",
+              "kind": "accompaniment",
+              "tick": 12000,
+              "voice": "bass",
+              "midi": 41,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_6_2",
+              "kind": "accompaniment",
+              "tick": 12480,
+              "voice": "bass",
+              "midi": 45,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_6_r1_2",
+              "kind": "accompaniment",
+              "tick": 12480,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_6_10_0",
+              "kind": "accompaniment",
+              "tick": 12720,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 937,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_6_10_1",
+              "kind": "accompaniment",
+              "tick": 12727,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 928,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_6_10_2",
+              "kind": "accompaniment",
+              "tick": 12734,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 919,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_6_10_3",
+              "kind": "accompaniment",
+              "tick": 12741,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 910,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_6_r1_3",
+              "kind": "accompaniment",
+              "tick": 12800,
+              "voice": "vibes",
+              "midi": 76,
+              "variant": 1,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_6_3",
+              "kind": "accompaniment",
+              "tick": 12960,
+              "voice": "bass",
+              "midi": 42,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_7_0",
+              "kind": "accompaniment",
+              "tick": 13440,
+              "voice": "bass",
+              "midi": 31,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_7_0_0",
+              "kind": "accompaniment",
+              "tick": 13440,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_7_r2_0",
+              "kind": "accompaniment",
+              "tick": 13440,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_5",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_5",
+              "kind": "data",
+              "tick": 13440,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_5",
+              "responsibility_id": "r2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_7_0_1",
+              "kind": "accompaniment",
+              "tick": 13447,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_7_0_2",
+              "kind": "accompaniment",
+              "tick": 13454,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_7_0_3",
+              "kind": "accompaniment",
+              "tick": 13461,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_7_1",
+              "kind": "accompaniment",
+              "tick": 13920,
+              "voice": "bass",
+              "midi": 35,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_7_r2_1",
+              "kind": "accompaniment",
+              "tick": 14080,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_7_2",
+              "kind": "accompaniment",
+              "tick": 14400,
+              "voice": "bass",
+              "midi": 38,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_7_r2_2",
+              "kind": "accompaniment",
+              "tick": 14400,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_7_10_0",
+              "kind": "accompaniment",
+              "tick": 14640,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_7_10_1",
+              "kind": "accompaniment",
+              "tick": 14647,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_7_10_2",
+              "kind": "accompaniment",
+              "tick": 14654,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_7_10_3",
+              "kind": "accompaniment",
+              "tick": 14661,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_7_3",
+              "kind": "accompaniment",
+              "tick": 14880,
+              "voice": "bass",
+              "midi": 35,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_7_r2_3",
+              "kind": "accompaniment",
+              "tick": 15040,
+              "voice": "piano",
+              "midi": 84,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_8_0",
+              "kind": "accompaniment",
+              "tick": 15360,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_8_0_0",
+              "kind": "accompaniment",
+              "tick": 15360,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_8_r2_0",
+              "kind": "accompaniment",
+              "tick": 15360,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_5",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_7",
+              "kind": "data",
+              "tick": 15360,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.55,
+              "duration_ms": 540,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_8_0_1",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 15367
+            },
+            {
+              "note_id": "chord_8_0_2",
+              "kind": "accompaniment",
+              "tick": 15374,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_8_0_3",
+              "kind": "accompaniment",
+              "tick": 15381,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_8_1",
+              "kind": "accompaniment",
+              "tick": 15840,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_8_r2_1",
+              "kind": "accompaniment",
+              "tick": 16000,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_8_2",
+              "kind": "accompaniment",
+              "tick": 16320,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_8_r2_2",
+              "kind": "accompaniment",
+              "tick": 16320,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_8_10_0",
+              "kind": "accompaniment",
+              "tick": 16560,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_8_10_1",
+              "kind": "accompaniment",
+              "tick": 16567,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_8_10_2",
+              "kind": "accompaniment",
+              "tick": 16574,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_8_10_3",
+              "kind": "accompaniment",
+              "tick": 16581,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_8_3",
+              "kind": "accompaniment",
+              "tick": 16800,
+              "voice": "bass",
+              "midi": 44,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_8_r2_3",
+              "kind": "accompaniment",
+              "tick": 16960,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_9_0",
+              "kind": "accompaniment",
+              "tick": 17280,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_9_0_0",
+              "kind": "accompaniment",
+              "tick": 17280,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_9_r2_0",
+              "kind": "accompaniment",
+              "tick": 17280,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.28,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_5",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_6",
+              "kind": "data",
+              "tick": 17280,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_6",
+              "responsibility_id": "r2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_9_0_1",
+              "kind": "accompaniment",
+              "tick": 17287,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_9_0_2",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 17294
+            },
+            {
+              "note_id": "chord_9_0_3",
+              "kind": "accompaniment",
+              "tick": 17301,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_9_1",
+              "kind": "accompaniment",
+              "tick": 17760,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_9_r2_1",
+              "kind": "accompaniment",
+              "tick": 17920,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_9_2",
+              "kind": "accompaniment",
+              "tick": 18240,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_9_r2_2",
+              "kind": "accompaniment",
+              "tick": 18240,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_9_10_0",
+              "kind": "accompaniment",
+              "tick": 18480,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 937,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_9_10_1",
+              "kind": "accompaniment",
+              "tick": 18487,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 928,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_9_10_2",
+              "kind": "accompaniment",
+              "tick": 18494,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 919,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_9_10_3",
+              "kind": "accompaniment",
+              "tick": 18501,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 910,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "bass_9_3",
+              "kind": "accompaniment",
+              "tick": 18720,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "note_event_1_2",
+              "kind": "data",
+              "tick": 18720,
+              "voice": "piano",
+              "midi": 84,
+              "variant": 2,
+              "velocity": 0.48,
+              "duration_ms": 625,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "event_id": "event_1_2",
+              "responsibility_id": "r2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_9_r2_3",
+              "kind": "accompaniment",
+              "tick": 18880,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 2,
+              "velocity": 0.2,
+              "duration_ms": 416,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            }
+          ]
+        },
+        "repo": {
+          "scene_id": "scene_1",
+          "grammar_version": "groove-chamber-v10",
+          "kit_id": "midnight-jazz-v4",
+          "kit_hash": "a302b56825512936a014a556a88819affd50de65c9d68ff3acb544702dc919f7",
+          "bpm": 96,
+          "beats_per_bar": 4,
+          "steps_per_bar": 16,
+          "ppq": 480,
+          "mode": "repo",
+          "total_bars": 6,
+          "phrases": [
+            {
+              "phrase_id": "repo_0",
+              "start_bar": 0,
+              "bar_count": 3,
+              "label": "previewRefund",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "phrase_id": "repo_1",
+              "start_bar": 3,
+              "bar_count": 3,
+              "label": "processRefund",
+              "unit_id": "unit_processRefund"
+            }
+          ],
+          "notes": [
+            {
+              "note_id": "bass_0_0",
+              "kind": "accompaniment",
+              "tick": 0,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_0_0",
+              "kind": "accompaniment",
+              "tick": 0,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r0_0",
+              "kind": "accompaniment",
+              "tick": 0,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_0_0_1",
+              "kind": "accompaniment",
+              "tick": 7,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_0_2",
+              "kind": "accompaniment",
+              "tick": 14,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_0_3",
+              "kind": "accompaniment",
+              "tick": 21,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r1_0",
+              "kind": "accompaniment",
+              "tick": 40,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_0_r2_0",
+              "kind": "accompaniment",
+              "tick": 80,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_0_r1_1",
+              "kind": "accompaniment",
+              "tick": 360,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_0_1",
+              "kind": "accompaniment",
+              "tick": 480,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r0_1",
+              "kind": "accompaniment",
+              "tick": 480,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_0_r2_1",
+              "kind": "accompaniment",
+              "tick": 720,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_0_r0_2",
+              "kind": "accompaniment",
+              "tick": 800,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_0_2",
+              "kind": "accompaniment",
+              "tick": 960,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r1_2",
+              "kind": "accompaniment",
+              "tick": 1000,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_0_r2_2",
+              "kind": "accompaniment",
+              "tick": 1040,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_0_10_0",
+              "kind": "accompaniment",
+              "tick": 1200,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_1",
+              "kind": "accompaniment",
+              "tick": 1207,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_2",
+              "kind": "accompaniment",
+              "tick": 1214,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_0_10_3",
+              "kind": "accompaniment",
+              "tick": 1221,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r1_3",
+              "kind": "accompaniment",
+              "tick": 1320,
+              "voice": "vibes",
+              "midi": 76,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_0_3",
+              "kind": "accompaniment",
+              "tick": 1440,
+              "voice": "bass",
+              "midi": 44,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_0_r0_3",
+              "kind": "accompaniment",
+              "tick": 1440,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "note_event_1_1",
+              "kind": "data",
+              "tick": 1440,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": 0.2,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "event_id": "event_1_1",
+              "responsibility_id": "r1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_0_r2_3",
+              "kind": "accompaniment",
+              "tick": 1680,
+              "voice": "piano",
+              "midi": 84,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_1_0",
+              "kind": "accompaniment",
+              "tick": 1920,
+              "voice": "bass",
+              "midi": 33,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_0_0",
+              "kind": "accompaniment",
+              "tick": 1920,
+              "voice": "piano",
+              "midi": 55,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r0_0",
+              "kind": "accompaniment",
+              "tick": 1920,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_1_0_1",
+              "kind": "accompaniment",
+              "tick": 1927,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_0_2",
+              "kind": "accompaniment",
+              "tick": 1934,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_0_3",
+              "kind": "accompaniment",
+              "tick": 1941,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r1_0",
+              "kind": "accompaniment",
+              "tick": 1960,
+              "voice": "vibes",
+              "midi": 74,
+              "variant": 1,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_1_r2_0",
+              "kind": "accompaniment",
+              "tick": 2000,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_1_r1_1",
+              "kind": "accompaniment",
+              "tick": 2280,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_1_1",
+              "kind": "accompaniment",
+              "tick": 2400,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r0_1",
+              "kind": "accompaniment",
+              "tick": 2400,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_1_r2_1",
+              "kind": "accompaniment",
+              "tick": 2640,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_1_r0_2",
+              "kind": "accompaniment",
+              "tick": 2720,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_1_2",
+              "kind": "accompaniment",
+              "tick": 2880,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r1_2",
+              "kind": "accompaniment",
+              "tick": 2920,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_1_r2_2",
+              "kind": "accompaniment",
+              "tick": 2960,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_1_10_0",
+              "kind": "accompaniment",
+              "tick": 3120,
+              "voice": "piano",
+              "midi": 55,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_1",
+              "kind": "accompaniment",
+              "tick": 3127,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_2",
+              "kind": "accompaniment",
+              "tick": 3134,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_1_10_3",
+              "kind": "accompaniment",
+              "tick": 3141,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r1_3",
+              "kind": "accompaniment",
+              "tick": 3240,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_1_3",
+              "kind": "accompaniment",
+              "tick": 3360,
+              "voice": "bass",
+              "midi": 37,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_1_r0_3",
+              "kind": "accompaniment",
+              "tick": 3360,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "note_event_1_2",
+              "kind": "data",
+              "tick": 3360,
+              "voice": "piano",
+              "midi": 84,
+              "variant": 2,
+              "velocity": 0.48,
+              "duration_ms": 625,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_1_r2_3",
+              "kind": "accompaniment",
+              "tick": 3600,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_2_0",
+              "kind": "accompaniment",
+              "tick": 3840,
+              "voice": "bass",
+              "midi": 38,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_0_0",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 3840
+            },
+            {
+              "note_id": "melody_2_r0_0",
+              "kind": "accompaniment",
+              "tick": 3840,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "event_id": "event_1_0",
+              "responsibility_id": "r0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "note_event_1_0",
+              "kind": "data",
+              "tick": 3840,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "event_id": "event_1_0",
+              "responsibility_id": "r0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_2_0_1",
+              "kind": "accompaniment",
+              "tick": 3847,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_0_2",
+              "kind": "accompaniment",
+              "tick": 3854,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_0_3",
+              "kind": "accompaniment",
+              "tick": 3861,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r1_0",
+              "kind": "accompaniment",
+              "tick": 3880,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_2_r2_0",
+              "kind": "accompaniment",
+              "tick": 3920,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_2_r1_1",
+              "kind": "accompaniment",
+              "tick": 4200,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_2_1",
+              "kind": "accompaniment",
+              "tick": 4320,
+              "voice": "bass",
+              "midi": 41,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r0_1",
+              "kind": "accompaniment",
+              "tick": 4320,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_2_r2_1",
+              "kind": "accompaniment",
+              "tick": 4560,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_2_r0_2",
+              "kind": "accompaniment",
+              "tick": 4640,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_2_2",
+              "kind": "accompaniment",
+              "tick": 4800,
+              "voice": "bass",
+              "midi": 45,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r1_2",
+              "kind": "accompaniment",
+              "tick": 4840,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_2_r2_2",
+              "kind": "accompaniment",
+              "tick": 4880,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "chord_2_10_0",
+              "kind": "accompaniment",
+              "tick": 5040,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 937,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_1",
+              "kind": "accompaniment",
+              "tick": 5047,
+              "voice": "piano",
+              "midi": 60,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 928,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_2",
+              "kind": "accompaniment",
+              "tick": 5054,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 919,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_2_10_3",
+              "kind": "accompaniment",
+              "tick": 5061,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 910,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r1_3",
+              "kind": "accompaniment",
+              "tick": 5160,
+              "voice": "vibes",
+              "midi": 76,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_1_1",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_2_3",
+              "kind": "accompaniment",
+              "tick": 5280,
+              "voice": "bass",
+              "midi": 42,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_2_r0_3",
+              "kind": "accompaniment",
+              "tick": 5280,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_1_0",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "melody_2_r2_3",
+              "kind": "accompaniment",
+              "tick": 5520,
+              "voice": "piano",
+              "midi": 84,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 312,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_1"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_1_2",
+              "unit_id": "unit_previewRefund"
+            },
+            {
+              "note_id": "bass_3_0",
+              "kind": "accompaniment",
+              "tick": 5760,
+              "voice": "bass",
+              "midi": 31,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_0_0",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 5760
+            },
+            {
+              "note_id": "melody_3_r0_0",
+              "kind": "accompaniment",
+              "tick": 5760,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_0",
+              "kind": "data",
+              "tick": 5760,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_3",
+              "kind": "data",
+              "tick": 5760,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": 0.2,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_5",
+              "kind": "data",
+              "tick": 5760,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.58,
+              "duration_ms": 650,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_5",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_3_0_1",
+              "kind": "accompaniment",
+              "tick": 5767,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_0_2",
+              "kind": "accompaniment",
+              "tick": 5774,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_0_3",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 5781
+            },
+            {
+              "note_id": "melody_3_r1_0",
+              "kind": "accompaniment",
+              "tick": 5800,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_3",
+              "responsibility_id": "r1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r2_0",
+              "kind": "accompaniment",
+              "tick": 5840,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_5",
+              "responsibility_id": "r2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r1_1",
+              "kind": "accompaniment",
+              "tick": 6120,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_4",
+              "responsibility_id": "r1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_3_1",
+              "kind": "accompaniment",
+              "tick": 6240,
+              "voice": "bass",
+              "midi": 35,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r0_1",
+              "kind": "accompaniment",
+              "tick": 6240,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r2_1",
+              "kind": "accompaniment",
+              "tick": 6480,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r0_2",
+              "kind": "accompaniment",
+              "tick": 6560,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_3_2",
+              "kind": "accompaniment",
+              "tick": 6720,
+              "voice": "bass",
+              "midi": 38,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r1_2",
+              "kind": "accompaniment",
+              "tick": 6760,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r2_2",
+              "kind": "accompaniment",
+              "tick": 6800,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_3_10_0",
+              "kind": "accompaniment",
+              "tick": 6960,
+              "voice": "piano",
+              "midi": 53,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_1",
+              "kind": "accompaniment",
+              "tick": 6967,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_2",
+              "kind": "accompaniment",
+              "tick": 6974,
+              "voice": "piano",
+              "midi": 64,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_3_10_3",
+              "kind": "accompaniment",
+              "tick": 6981,
+              "voice": "piano",
+              "midi": 69,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r1_3",
+              "kind": "accompaniment",
+              "tick": 7080,
+              "voice": "vibes",
+              "midi": 76,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_3_3",
+              "kind": "accompaniment",
+              "tick": 7200,
+              "voice": "bass",
+              "midi": 35,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_3_r0_3",
+              "kind": "accompaniment",
+              "tick": 7200,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_3_r2_3",
+              "kind": "accompaniment",
+              "tick": 7440,
+              "voice": "piano",
+              "midi": 84,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_5",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_4_0",
+              "kind": "accompaniment",
+              "tick": 7680,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_0_0",
+              "kind": "accompaniment",
+              "tick": 7680,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r0_0",
+              "kind": "accompaniment",
+              "tick": 7680,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_2",
+              "kind": "data",
+              "duration_ms": 540,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.55,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "tick": 7680,
+              "event_id": "event_0_2",
+              "responsibility_id": "r0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_7",
+              "kind": "data",
+              "duration_ms": 540,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.55,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "tick": 7680,
+              "event_id": "event_0_7",
+              "responsibility_id": "r2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_4_0_1",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 7687
+            },
+            {
+              "note_id": "chord_4_0_2",
+              "kind": "accompaniment",
+              "tick": 7694,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_0_3",
+              "kind": "accompaniment",
+              "tick": 7701,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_0",
+              "kind": "accompaniment",
+              "tick": 7720,
+              "voice": "vibes",
+              "midi": 74,
+              "variant": 1,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_4_r2_0",
+              "kind": "accompaniment",
+              "tick": 7760,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_4_r1_1",
+              "kind": "accompaniment",
+              "tick": 8040,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_4_1",
+              "kind": "accompaniment",
+              "tick": 8160,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r0_1",
+              "kind": "accompaniment",
+              "tick": 8160,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_4_r2_1",
+              "kind": "accompaniment",
+              "tick": 8400,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_4_r0_2",
+              "kind": "accompaniment",
+              "tick": 8480,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_4_2",
+              "kind": "accompaniment",
+              "tick": 8640,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_2",
+              "kind": "accompaniment",
+              "tick": 8680,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_4_r2_2",
+              "kind": "accompaniment",
+              "tick": 8720,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_5",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_4_10_0",
+              "kind": "accompaniment",
+              "tick": 8880,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_10_1",
+              "kind": "accompaniment",
+              "tick": 8887,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_10_2",
+              "kind": "accompaniment",
+              "tick": 8894,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_4_10_3",
+              "kind": "accompaniment",
+              "tick": 8901,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r1_3",
+              "kind": "accompaniment",
+              "tick": 9000,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_4_3",
+              "kind": "accompaniment",
+              "tick": 9120,
+              "voice": "bass",
+              "midi": 44,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_4_r0_3",
+              "kind": "accompaniment",
+              "tick": 9120,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_4_r2_3",
+              "kind": "accompaniment",
+              "tick": 9360,
+              "voice": "piano",
+              "midi": 74,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_5_0",
+              "kind": "accompaniment",
+              "tick": 9600,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_0_0",
+              "kind": "accompaniment",
+              "tick": 9600,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r0_0",
+              "kind": "accompaniment",
+              "tick": 9600,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_1",
+              "kind": "data",
+              "tick": 9600,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": -0.25,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_1",
+              "responsibility_id": "r0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_4",
+              "kind": "data",
+              "tick": 9600,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": 0.2,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_4",
+              "responsibility_id": "r1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "note_event_0_6",
+              "kind": "data",
+              "tick": 9600,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.52,
+              "duration_ms": 520,
+              "pan": -0.08,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_5_0_1",
+              "kind": "accompaniment",
+              "tick": 9607,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 1500,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_0_2",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 9614
+            },
+            {
+              "note_id": "chord_5_0_3",
+              "kind": "accompaniment",
+              "duration_ms": 1500,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "pan": 0.12,
+              "evidence_ids": [],
+              "tick": 9621
+            },
+            {
+              "note_id": "melody_5_r1_0",
+              "kind": "accompaniment",
+              "tick": 9640,
+              "voice": "vibes",
+              "midi": 67,
+              "variant": 1,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_5_r2_0",
+              "kind": "accompaniment",
+              "tick": 9680,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 2,
+              "velocity": 0.16165807537309523,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_5_r1_1",
+              "kind": "accompaniment",
+              "tick": 9960,
+              "voice": "vibes",
+              "midi": 69,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_5_1",
+              "kind": "accompaniment",
+              "tick": 10080,
+              "voice": "bass",
+              "midi": 43,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r0_1",
+              "kind": "accompaniment",
+              "tick": 10080,
+              "voice": "piano",
+              "midi": 76,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_0",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_5_r2_1",
+              "kind": "accompaniment",
+              "tick": 10320,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "event_id": "event_0_5",
+              "responsibility_id": "r2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_5_r0_2",
+              "kind": "accompaniment",
+              "tick": 10400,
+              "voice": "piano",
+              "midi": 79,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_1",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_5_2",
+              "kind": "accompaniment",
+              "tick": 10560,
+              "voice": "bass",
+              "midi": 40,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r1_2",
+              "kind": "accompaniment",
+              "tick": 10600,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_3",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_5_r2_2",
+              "kind": "accompaniment",
+              "tick": 10640,
+              "voice": "piano",
+              "midi": 81,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_6",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "chord_5_10_0",
+              "kind": "accompaniment",
+              "tick": 10800,
+              "voice": "piano",
+              "midi": 52,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 937,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_10_1",
+              "kind": "accompaniment",
+              "tick": 10807,
+              "voice": "piano",
+              "midi": 59,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 928,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_10_2",
+              "kind": "accompaniment",
+              "tick": 10814,
+              "voice": "piano",
+              "midi": 62,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 919,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "chord_5_10_3",
+              "kind": "accompaniment",
+              "tick": 10821,
+              "voice": "piano",
+              "midi": 67,
+              "variant": 0,
+              "velocity": 0.19,
+              "duration_ms": 910,
+              "pan": 0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r1_3",
+              "kind": "accompaniment",
+              "tick": 10920,
+              "voice": "vibes",
+              "midi": 72,
+              "variant": 1,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r1",
+              "event_id": "event_0_4",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "bass_5_3",
+              "kind": "accompaniment",
+              "tick": 11040,
+              "voice": "bass",
+              "midi": 36,
+              "variant": 0,
+              "velocity": 0.42,
+              "duration_ms": 510,
+              "pan": -0.12,
+              "evidence_ids": []
+            },
+            {
+              "note_id": "melody_5_r0_3",
+              "kind": "accompaniment",
+              "tick": 11040,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 0,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 620,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r0",
+              "event_id": "event_0_2",
+              "unit_id": "unit_processRefund"
+            },
+            {
+              "note_id": "melody_5_r2_3",
+              "kind": "accompaniment",
+              "tick": 11280,
+              "voice": "piano",
+              "midi": 72,
+              "variant": 2,
+              "velocity": 0.11547005383792516,
+              "duration_ms": 312,
+              "pan": 0.12,
+              "evidence_ids": [
+                "evidence_0"
+              ],
+              "responsibility_id": "r2",
+              "event_id": "event_0_7",
+              "unit_id": "unit_processRefund"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "sources": {
+    "src/refund-service.ts": "export function processRefund(\n  price: number, daysSincePurchase: number, isFinalSale: boolean,\n  hasReceipt: boolean, customerName: string,\n) {\n  const withinWindow = daysSincePurchase <= 30;\n  const refundable = !isFinalSale && hasReceipt;\n  const eligible = withinWindow && refundable;\n  const fee = Math.round(price * 0.05);\n  const amount = eligible ? Math.max(0, price - fee) : 0;\n  const greeting = `Hello, ${customerName}`;\n  const message = `${greeting}. Your refund is ${amount} yen.`;\n  return { eligible, amount, message };\n}\n",
+    "src/refund-preview.ts": "export function previewRefund(\n  price: number, daysSincePurchase: number, isFinalSale: boolean,\n  hasReceipt: boolean, customerName: string,\n) {\n  const eligible = daysSincePurchase <= 30 && !isFinalSale;\n  const amount = eligible ? Math.max(0, price - price * 0.05) : 0;\n  return `${customerName}: ${amount} yen`;\n}\n",
+    "README.md": "# 混ざった返金設計\n公開サンプルの返金アプリ。返金条件、返金額、通知本文が対象です。\n一つの実装に、条件・計算・通知が重なる。\n"
+  },
+  "sample_id": "mixed"
+}

@@ -1,0 +1,82 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "record_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Record Id",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "comparison_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Comparison Id",
+      "type": "string"
+    },
+    "unit_a": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Unit A",
+      "type": "string"
+    },
+    "unit_b": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Unit B",
+      "type": "string"
+    },
+    "source_hash_a": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Hash A",
+      "type": "string"
+    },
+    "source_hash_b": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Hash B",
+      "type": "string"
+    },
+    "start_row": {
+      "minimum": 0,
+      "title": "Start Row",
+      "type": "integer"
+    },
+    "end_row": {
+      "exclusiveMinimum": 0,
+      "title": "End Row",
+      "type": "integer"
+    },
+    "expectation": {
+      "maxLength": 1000,
+      "title": "Expectation",
+      "type": "string"
+    },
+    "observation": {
+      "maxLength": 1000,
+      "title": "Observation",
+      "type": "string"
+    },
+    "question": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    }
+  },
+  "required": [
+    "record_id",
+    "snapshot_id",
+    "comparison_id",
+    "unit_a",
+    "unit_b",
+    "source_hash_a",
+    "source_hash_b",
+    "start_row",
+    "end_row",
+    "expectation",
+    "observation",
+    "question"
+  ],
+  "title": "ComparisonInvestigationRequest",
+  "type": "object"
+}

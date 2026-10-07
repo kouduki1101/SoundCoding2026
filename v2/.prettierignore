@@ -1,0 +1,12 @@
+node_modules
+dist
+.tools
+.local
+.venv
+artifacts
+docs/SPEC.md
+fixtures
+contracts
+packages/contracts
+pnpm-lock.yaml
+uv.lock

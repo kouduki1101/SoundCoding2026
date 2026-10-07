@@ -1,0 +1,474 @@
+.review-center .arrangement {
+  position: relative;
+  flex: 0 1 auto;
+  max-height: 44%;
+  overflow: visible;
+  background: var(--surface);
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  --track-label: 150px;
+}
+.review-center .arrangement.has-comparison-lesson {
+  max-height: 56%;
+}
+.review-center .arrangement:has(.arrangement-backing) {
+  max-height: 56%;
+}
+.review-center .review-code {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 160px;
+}
+.review-center .arrangement .arrangement-title {
+  height: 48px;
+  padding: 0 16px;
+  gap: 12px;
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--line);
+}
+.arrangement-title b {
+  font-weight: 650;
+}
+.arrangement-title > span svg {
+  color: var(--muted);
+}
+.arrangement .structure-entry {
+  flex: none;
+  margin: 0;
+  padding: 5px 7px;
+  font-size: 11px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+.arrangement-title .motif-legend {
+  font-size: 11px;
+}
+.review-center .motif-legend > div {
+  background: var(--surface);
+  border-color: var(--line);
+}
+.review-center .arrangement-layout {
+  border: 0;
+  background: var(--bg);
+  padding: 2px;
+}
+.review-center .arrangement-layout button {
+  color: var(--muted);
+  box-shadow: none;
+  padding: 5px 7px;
+}
+.review-center .arrangement-layout button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 1px 3px #18244312;
+}
+.review-center .arrangement .arrangement-ruler {
+  height: 24px;
+  background: var(--bg);
+  color: var(--muted);
+  border-color: var(--line);
+}
+.review-center .arrangement .arrangement-ruler > div {
+  background: transparent;
+}
+.review-center .arrangement-tracks {
+  flex: 0 1 auto;
+  min-height: 64px;
+  position: relative;
+  background: var(--surface);
+  scrollbar-width: thin;
+}
+.review-center .composer-track {
+  height: 76px;
+  border-color: var(--line);
+}
+.review-center .arrangement .composer-track-label {
+  background: var(--surface);
+  border-color: var(--line);
+  padding: 0 12px;
+}
+.review-center .composer-track.selected-track .composer-track-label {
+  background: var(--bg);
+}
+.review-center .composer-track-label small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.review-center .arrangement .composer-track-lane {
+  background: linear-gradient(to right, var(--line) 1px, transparent 1px);
+}
+.review-center .midi-clip {
+  top: 10px;
+  height: 56px;
+  border-radius: 6px;
+  container-type: inline-size;
+}
+.review-center .midi-clip.selected {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.review-center .clip-title {
+  height: 20px;
+  padding: 4px 7px;
+  font-size: 10px;
+  background: transparent;
+}
+.clip-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.clip-title small {
+  flex: none;
+}
+@container (max-width: 90px) {
+  .clip-title small {
+    display: none;
+  }
+}
+.review-center .arrangement .composer-now {
+  height: 40px;
+  padding: 0 16px;
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 11px;
+}
+.review-center .arrangement .composer-now .audition {
+  background: transparent;
+  border-color: transparent;
+  color: var(--accent);
+  white-space: nowrap;
+  font-size: 11px;
+}
+.review-center .code-panel .panel-heading {
+  position: relative;
+  height: 68px;
+  padding: 10px 16px;
+}
+.code-heading-context {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+.code-heading-context strong,
+.code-heading-context > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.code-heading-context strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+.code-heading-context > span {
+  font:
+    11px Consolas,
+    monospace;
+  color: var(--muted);
+}
+.code-heading-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.code-panel .event-navigation {
+  position: static;
+  padding: 0;
+  border: 0;
+  font-size: 11px;
+  background: transparent;
+}
+.event-navigation summary {
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--muted);
+}
+.code-panel .event-navigation > div {
+  z-index: 8;
+  top: calc(100% - 1px);
+  bottom: auto;
+  left: 12px;
+  right: 12px;
+  max-height: min(280px, 40dvh);
+  gap: 4px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px #17203820;
+}
+.code-panel .event-navigation button {
+  width: 100%;
+  display: grid;
+  justify-content: start;
+  text-align: left;
+  padding: 8px 10px;
+  border-color: transparent;
+  overflow-wrap: anywhere;
+}
+.code-panel .event-navigation button b {
+  font-weight: 500;
+}
+.code-panel .event-navigation button small {
+  font-size: 10px;
+}
+.code-highlight,
+html[data-theme='dark'] .code-highlight {
+  background: #6575df16;
+  border: 0;
+}
+.code-concern,
+html[data-theme='dark'] .code-concern {
+  background: transparent;
+}
+.concern-line-marker {
+  border-left: 2px dotted var(--muted);
+}
+.midi-clip.has-review-candidate {
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.midi-clip.has-concern .clip-title {
+  border-top: 0;
+}
+.midi-clip .clip-title small,
+.midi-clip.has-review-candidate .clip-title small,
+html[data-theme='dark'] .midi-clip.has-review-candidate .clip-title small {
+  color: var(--muted);
+}
+.concern-region,
+.concern-region:hover {
+  background: transparent;
+  border-bottom: 1px dotted var(--muted);
+}
+.arrangement-title .review-focus {
+  position: static;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  max-height: none;
+}
+.review-focus summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  color: var(--muted);
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.review-focus summary::-webkit-details-marker {
+  display: none;
+}
+.review-focus summary:hover,
+.review-focus[open] summary {
+  background: var(--bg);
+}
+.candidate-count {
+  background: var(--bg);
+  border-radius: 4px;
+  padding: 0 5px;
+}
+.review-focus .review-focus-list {
+  position: absolute;
+  z-index: 12;
+  top: 43px;
+  left: 12px;
+  right: 12px;
+  max-height: min(300px, 42dvh);
+  overflow: auto;
+  margin: 0;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px #17203820;
+}
+.candidate-intro {
+  margin: 0 0 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.review-focus-item {
+  padding: 10px;
+  gap: 10px;
+}
+.review-focus-item b {
+  font-size: 11px;
+  font-weight: 500;
+  white-space: normal;
+}
+.review-focus-item small {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.review-focus .focus-explanation {
+  display: block;
+  font-size: 10px;
+}
+.candidate-mark {
+  position: absolute;
+  bottom: 2px;
+  width: 12px;
+  height: 12px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+  background: var(--surface);
+  z-index: 3;
+}
+.candidate-mark.selected {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.candidate-details {
+  margin: 10px 0 18px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.candidate-details b {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+.candidate-details small {
+  color: var(--muted);
+}
+.candidate-details ul {
+  padding-left: 16px;
+}
+.candidate-details p {
+  margin: 5px 0;
+}
+.candidate-details .counter-status {
+  color: var(--accent);
+}
+.call-relationships {
+  padding: 10px 0;
+  border-block: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.call-relationships summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.call-relationships small {
+  display: block;
+  margin: 6px 0;
+  color: var(--muted);
+}
+.call-relationships select {
+  max-width: 100%;
+  margin: 8px 0;
+}
+.relationship-dialogue {
+  margin: 14px 0 10px;
+  padding: 13px;
+  border: 1px solid #d9e1f4;
+  border-radius: 10px;
+  background: #f6f8ff;
+}
+.relationship-dialogue > strong {
+  color: #34478b;
+  font-size: 13px;
+}
+.relationship-dialogue > p {
+  margin: 6px 0 11px;
+  color: #4f5a76;
+  font-size: 12px;
+}
+.relationship-dialogue-phases {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3px;
+  margin-bottom: 10px;
+}
+.relationship-dialogue-phases span {
+  padding: 5px 2px;
+  border-radius: 5px;
+  background: #e8ebf5;
+  color: #657087;
+  font-size: 11px;
+  text-align: center;
+}
+.relationship-dialogue-phases span[data-active='true'] {
+  background: #4b61bf;
+  color: white;
+}
+.relationship-dialogue > button {
+  width: 100%;
+}
+.relationship-source pre {
+  margin: 4px 0 8px;
+  padding: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    11px/1.5 Consolas,
+    monospace;
+}
+@media (max-width: 1100px) {
+  .review-center .arrangement {
+    --track-label: 110px;
+  }
+  .review-center .arrangement-title {
+    gap: 6px;
+    padding: 0 10px;
+  }
+  .arrangement .structure-entry {
+    font-size: 10px;
+  }
+  .arrangement .structure-entry svg {
+    display: none;
+  }
+  .review-center .arrangement-layout button {
+    padding: 4px;
+  }
+  .review-center .code-panel .panel-heading {
+    padding-inline: 12px;
+  }
+  .code-heading-context strong {
+    font-size: 12px;
+  }
+  .code-heading-actions {
+    gap: 4px;
+  }
+}
+@media (max-height: 650px) {
+  .review-center .arrangement {
+    max-height: 46%;
+  }
+  .review-center .arrangement .arrangement-title {
+    height: 40px;
+  }
+  .review-center .composer-track {
+    height: 64px;
+  }
+  .review-center .midi-clip {
+    top: 7px;
+    height: 50px;
+  }
+  .review-center .arrangement .composer-now {
+    height: 34px;
+  }
+  .review-center .code-panel .panel-heading {
+    height: 60px;
+  }
+  .review-focus .review-focus-list {
+    top: 36px;
+  }
+}

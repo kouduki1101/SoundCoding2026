@@ -1,0 +1,32 @@
+title = "Code Groove secret scanning"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "private-reviewer-identifiers"
+description = "Private reviewer account and secret identifiers"
+regex = '''(?:[A-Za-z0-9_.+-]+@zenn5\.com|cg-reviewer-[A-Za-z0-9-]{3,})'''
+keywords = ["zenn5", "cg-reviewer"]
+
+[[allowlists]]
+description = "Firebase browser key restricted to authentication APIs"
+ruleIds = ["gcp-api-key"]
+condition = "AND"
+paths = ['^infra/deployment-config\.json$']
+regexTarget = "secret"
+regexes = ['AIzaSyALcKVhjwHoKGMHKSKU2KhWEUITpbjROCA']
+
+[[allowlists]]
+description = "Empty environment variable in the specification example"
+ruleIds = ["generic-api-key"]
+regexTarget = "match"
+regexes = ['^GOOGLE_CLOUD_API_KEY=\r?\n']
+
+[[allowlists]]
+description = "Serialized source-file names; extracted sources are scanned separately"
+ruleIds = ["generic-api-key"]
+condition = "AND"
+paths = ['^fixtures/repository-reference/tsugiai\.json$']
+regexTarget = "match"
+regexes = ['^(?:auth\.py|AuthContext\.tsx|AuthVerifyPage\.tsx|handoverApi\.ts)": "']

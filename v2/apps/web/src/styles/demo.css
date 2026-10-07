@@ -1,0 +1,94 @@
+.demo-comparison {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  flex: none;
+  color: var(--text);
+  background: var(--surface);
+}
+.demo-comparison > small {
+  display: block;
+  margin: 4px 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.demo-pairs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.demo-pairs > div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.demo-pairs span {
+  font-size: 11px;
+}
+.demo-pairs button {
+  padding: 5px 7px;
+  font-size: 11px;
+  display: grid;
+  gap: 2px;
+}
+.demo-pairs button small {
+  font-size: 10px;
+}
+.event-navigation {
+  padding: 5px 12px;
+  border-top: 1px solid var(--line);
+  flex: none;
+  background: var(--surface);
+  position: relative;
+  z-index: 4;
+}
+.event-navigation > div {
+  max-height: 100px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-top: 5px;
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.review-code {
+  height: clamp(180px, 28dvh, 260px);
+}
+.arrangement-tracks {
+  min-height: 100px;
+}
+.event-navigation button {
+  font-size: 11px;
+}
+.integration-selection {
+  margin: 16px 0;
+  border: 1px solid var(--line);
+}
+.integration-selection > button {
+  margin: 8px 4px 4px 0;
+}
+.counter-evidence {
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
+}
+.integration-owners {
+  max-height: 240px;
+  overflow: auto;
+  margin-top: 8px;
+}
+@media (max-height: 750px) {
+  .demo-comparison {
+    padding: 5px 10px;
+  }
+  .demo-comparison > small {
+    max-width: 100%;
+  }
+  .demo-pairs {
+    gap: 3px 8px;
+  }
+}

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout Lab — working sample</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/">CHECKOUT LAB<span>Small objects. Thoughtful code.</span></a
+      ><span class="label">LOCAL DEMO · 実決済なし</span>
+    </header>
+    <main>
+      <div class="intro">
+        <span class="label">THE STUDIO COLLECTION</span>
+        <h1>動くコードから、<br />健康状態を聴く。</h1>
+        <p>
+          Code Grooveで聴いた決済ロジックが、このカートを動かしています。<br />見積もりはブラウザで、確定価格と注文の保存はサーバーで。
+        </p>
+      </div>
+      <form id="cart">
+        <section class="products" aria-label="商品">
+          <article>
+            <div class="object book">
+              <i>FIELD<br />NOTES</i><span>01</span>
+            </div>
+            <div class="product-row">
+              <div>
+                <h2>Field Notes</h2>
+                <p>日々のアイデアを残すノート</p>
+              </div>
+              <b>$24</b>
+            </div>
+            <label
+              >数量<select id="field-notes" aria-label="Field Notesの数量">
+                <option>0</option>
+                <option selected>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select></label
+            >
+          </article>
+          <article>
+            <div class="object print"><i></i><span>02</span></div>
+            <div class="product-row">
+              <div>
+                <h2>Studio Print</h2>
+                <p>スタジオのためのアートプリント</p>
+              </div>
+              <b>$18</b>
+            </div>
+            <label
+              >数量<select id="studio-print" aria-label="Studio Printの数量">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select></label
+            >
+          </article>
+          <article>
+            <div class="object gift">
+              <i>FOR<br />YOU.</i><span>03</span>
+            </div>
+            <div class="product-row">
+              <div>
+                <h2>Gift Card</h2>
+                <p>割引・ポイント対象外のギフト</p>
+              </div>
+              <b>$20</b>
+            </div>
+            <label
+              >数量<select id="gift-card" aria-label="Gift Cardの数量">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select></label
+            >
+          </article>
+        </section>
+        <aside class="checkout">
+          <span class="label">YOUR CART</span>
+          <h2>注文を試す</h2>
+          <label class="coupon-label"
+            >クーポン<select id="coupon" aria-label="クーポン">
+              <option value="READ">READ · 20% OFF</option>
+              <option value="">使わない</option>
+              <option value="OLD">OLD · 期限切れ</option>
+            </select></label
+          >
+          <p id="coupon-state"></p>
+          <label class="member-label"
+            ><input id="member" type="checkbox" checked />デモ会員としてポイントを付ける</label
+          >
+          <dl>
+            <div>
+              <dt>商品合計</dt>
+              <dd id="subtotal">—</dd>
+            </div>
+            <div>
+              <dt>割引</dt>
+              <dd id="discount">—</dd>
+            </div>
+            <div>
+              <dt>送料</dt>
+              <dd>$3.00</dd>
+            </div>
+            <div class="total">
+              <dt>見積もり</dt>
+              <dd id="total">—</dd>
+            </div>
+          </dl>
+          <button id="checkout" disabled>注文を確定する <span>→</span></button
+          ><small
+            >実際の支払い・個人情報の入力はありません。<br />確定時はサーバーが価格・期限を再確認します。</small
+          >
+          <p id="message" role="status" aria-live="polite"></p>
+        </aside>
+      </form>
+      <section class="history">
+        <div>
+          <span class="label">SAVED ON THIS COMPUTER</span>
+          <h2>注文履歴</h2>
+          <p id="no-orders">最初の注文を試してみてください。</p>
+        </div>
+        <ul id="orders"></ul>
+      </section>
+      <details class="source-info">
+        <summary>動いているコードと検査範囲</summary>
+        <p>
+          保存済みGemini解析の対象は src
+          の13関数。下のコードは演奏の根拠と同じファイルです。画面・起動用サーバーは追加したデモ実装で、この保存済み解析の対象外です。未検査部分の健康状態は主張しません。
+        </p>
+        <nav>
+          <a href="/source/preview.ts">preview.ts</a><a href="/source/pricing.ts">pricing.ts</a
+          ><a href="/source/rewards.ts">rewards.ts</a><a href="/source/checkout.ts">checkout.ts</a>
+        </nav>
+        <p>
+          カートの見積もりはネット接続を切っても再計算できます。注文の確定には接続が必要です。端末内に最大200件の注文を保存します。
+        </p>
+      </details>
+    </main>
+    <script type="module" src="/app.mjs"></script>
+  </body>
+</html>
