@@ -1,0 +1,192 @@
+{
+  "$defs": {
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "File Id",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file_id",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "StaticCallLink": {
+      "additionalProperties": false,
+      "properties": {
+        "link_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Link Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 160,
+          "title": "Name",
+          "type": "string"
+        },
+        "call_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "callee_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution": {
+          "enum": [
+            "static_definition",
+            "unresolved"
+          ],
+          "title": "Resolution",
+          "type": "string"
+        },
+        "return_spans": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "maxItems": 16,
+          "title": "Return Spans",
+          "type": "array"
+        },
+        "result_binding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Result Binding"
+        },
+        "use_spans": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "maxItems": 16,
+          "title": "Use Spans",
+          "type": "array"
+        },
+        "use_status": {
+          "enum": [
+            "named_references",
+            "immediate_expression",
+            "unresolved"
+          ],
+          "title": "Use Status",
+          "type": "string"
+        },
+        "truncated": {
+          "title": "Truncated",
+          "type": "boolean"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "link_id",
+        "name",
+        "call_span",
+        "callee_span",
+        "resolution",
+        "return_spans",
+        "result_binding",
+        "use_spans",
+        "use_status",
+        "truncated",
+        "limitations"
+      ],
+      "title": "StaticCallLink",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "extraction_version": {
+      "const": "static-call-links-v1",
+      "default": "static-call-links-v1",
+      "title": "Extraction Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "unit_span": {
+      "$ref": "#/$defs/Span"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "unsupported"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "links": {
+      "items": {
+        "$ref": "#/$defs/StaticCallLink"
+      },
+      "maxItems": 24,
+      "title": "Links",
+      "type": "array"
+    },
+    "truncated": {
+      "title": "Truncated",
+      "type": "boolean"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 12,
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "unit_span",
+    "status",
+    "links",
+    "truncated",
+    "limitations"
+  ],
+  "title": "CallRelationships",
+  "type": "object"
+}

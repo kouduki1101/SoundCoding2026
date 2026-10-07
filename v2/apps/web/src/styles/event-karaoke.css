@@ -1,0 +1,150 @@
+.event-karaoke {
+  flex: none;
+  min-width: 0;
+  height: 142px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.event-karaoke-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 27px;
+  padding: 0 16px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.event-karaoke-heading strong {
+  color: var(--text);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.event-karaoke-lines {
+  display: grid;
+  grid-template-rows: repeat(5, 22px);
+  padding: 1px 10px 3px;
+}
+
+.event-karaoke-slot {
+  position: relative;
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  text-align: left;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+button.event-karaoke-slot:hover,
+button.event-karaoke-slot.current {
+  background: var(--bg);
+}
+
+.event-karaoke-slot[aria-pressed='true'] {
+  box-shadow: inset 2px 0 var(--accent);
+  border: 0;
+  background: var(--bg);
+}
+
+.event-karaoke-location {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font:
+    10px Consolas,
+    monospace;
+}
+
+.event-karaoke-slot.current .event-karaoke-location::before {
+  content: '▶ ';
+  color: var(--accent);
+}
+
+.event-karaoke-source {
+  position: relative;
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-karaoke-source code {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  font:
+    11px Consolas,
+    monospace;
+}
+
+.event-karaoke-source .event-karaoke-sung {
+  position: absolute;
+  inset: 0;
+  color: var(--accent);
+  pointer-events: none;
+}
+
+.event-karaoke-candidate {
+  white-space: nowrap;
+  color: var(--warning);
+  font-size: 9px;
+}
+
+.event-karaoke-unavailable {
+  font-style: italic;
+}
+
+.event-karaoke-repeat {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.event-karaoke-empty {
+  margin: 12px 16px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-height: 720px) {
+  .event-karaoke {
+    height: 25px;
+  }
+
+  .event-karaoke-heading {
+    display: none;
+  }
+
+  .event-karaoke-lines {
+    display: block;
+    padding: 1px 4px;
+  }
+
+  .event-karaoke-slot:not(.focus) {
+    display: none;
+  }
+}
+
+@media (max-width: 750px) {
+  .event-karaoke-slot {
+    grid-template-columns: 82px minmax(0, 1fr) auto;
+  }
+}

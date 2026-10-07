@@ -1,0 +1,972 @@
+{
+  "$defs": {
+    "CallPhrase": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "identity": {
+          "enum": [
+            "static_target",
+            "same_expression"
+          ],
+          "title": "Identity",
+          "type": "string"
+        },
+        "midi": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "Midi",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "identity",
+        "midi"
+      ],
+      "title": "CallPhrase",
+      "type": "object"
+    },
+    "ComparisonHumanRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "expectation": {
+          "title": "Expectation",
+          "type": "string"
+        },
+        "observation": {
+          "title": "Observation",
+          "type": "string"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "recognition": {
+          "enum": [
+            "unrecorded",
+            "recognized",
+            "not_recognized"
+          ],
+          "title": "Recognition",
+          "type": "string"
+        },
+        "reason_status": {
+          "enum": [
+            "not_started",
+            "unanswered",
+            "deferred",
+            "confirmed_with_evidence"
+          ],
+          "title": "Reason Status",
+          "type": "string"
+        },
+        "judgment": {
+          "enum": [
+            "unrecorded",
+            "intended_difference",
+            "needs_review",
+            "insufficient_context"
+          ],
+          "title": "Judgment",
+          "type": "string"
+        },
+        "started_at": {
+          "title": "Started At",
+          "type": "string"
+        },
+        "updated_at": {
+          "title": "Updated At",
+          "type": "string"
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ended At"
+        },
+        "reason_evidence": {
+          "title": "Reason Evidence",
+          "type": "string"
+        },
+        "answers": {
+          "items": {
+            "$ref": "#/$defs/ComparisonInvestigationResult"
+          },
+          "title": "Answers",
+          "type": "array"
+        },
+        "operations": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Operations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "record_id",
+        "expectation",
+        "observation",
+        "question",
+        "recognition",
+        "reason_status",
+        "judgment",
+        "started_at",
+        "updated_at",
+        "ended_at",
+        "reason_evidence",
+        "answers",
+        "operations"
+      ],
+      "title": "ComparisonHumanRecord",
+      "type": "object"
+    },
+    "ComparisonInvestigationRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "comparison_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "unit_a": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit A",
+          "type": "string"
+        },
+        "unit_b": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit B",
+          "type": "string"
+        },
+        "source_hash_a": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Hash A",
+          "type": "string"
+        },
+        "source_hash_b": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Hash B",
+          "type": "string"
+        },
+        "start_row": {
+          "minimum": 0,
+          "title": "Start Row",
+          "type": "integer"
+        },
+        "end_row": {
+          "exclusiveMinimum": 0,
+          "title": "End Row",
+          "type": "integer"
+        },
+        "expectation": {
+          "maxLength": 1000,
+          "title": "Expectation",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 1000,
+          "title": "Observation",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "snapshot_id",
+        "comparison_id",
+        "unit_a",
+        "unit_b",
+        "source_hash_a",
+        "source_hash_b",
+        "start_row",
+        "end_row",
+        "expectation",
+        "observation",
+        "question"
+      ],
+      "title": "ComparisonInvestigationRequest",
+      "type": "object"
+    },
+    "ComparisonInvestigationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "interpretation": {
+          "enum": [
+            "maintained",
+            "revised",
+            "inconclusive"
+          ],
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "counter_explanation": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Counter Explanation",
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Unknowns",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "structure_comparison",
+          "default": "structure_comparison",
+          "title": "Kind",
+          "type": "string"
+        },
+        "investigation_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "base_analysis_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Base Analysis Id",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "live",
+            "fixture"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "request": {
+          "$ref": "#/$defs/ComparisonInvestigationRequest"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "model_id": {
+          "title": "Model Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "interpretation",
+        "summary",
+        "reason",
+        "counter_explanation",
+        "unknowns",
+        "evidence_ids",
+        "investigation_id",
+        "base_analysis_id",
+        "origin",
+        "request",
+        "evidence",
+        "model_id"
+      ],
+      "title": "ComparisonInvestigationResult",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "projection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Projection Sha256",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "code",
+            "test",
+            "document"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "created_by_tool_event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Created By Tool Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "snapshot_id",
+        "span",
+        "projection_sha256",
+        "source_kind",
+        "observation",
+        "created_by_tool_event_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "File Id",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file_id",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "StructureComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "comparison_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "alignment_version": {
+          "const": "unique-monotone-v1",
+          "default": "unique-monotone-v1",
+          "title": "Alignment Version",
+          "type": "string"
+        },
+        "a": {
+          "$ref": "#/$defs/SyntaxProjection"
+        },
+        "b": {
+          "$ref": "#/$defs/SyntaxProjection"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/StructureRow"
+          },
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "comparison_id",
+        "a",
+        "b",
+        "rows"
+      ],
+      "title": "StructureComparison",
+      "type": "object"
+    },
+    "StructurePlaybackPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "encoding_version": {
+          "const": "structure-neutral-v1",
+          "default": "structure-neutral-v1",
+          "title": "Encoding Version",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "sorted-call-pairs-v1",
+          "default": "sorted-call-pairs-v1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "sound_version": {
+          "const": "sine-envelope-v1",
+          "default": "sine-envelope-v1",
+          "title": "Sound Version",
+          "type": "string"
+        },
+        "dictionary_limit": {
+          "const": 4,
+          "default": 4,
+          "title": "Dictionary Limit",
+          "type": "integer"
+        },
+        "dictionary": {
+          "items": {
+            "$ref": "#/$defs/CallPhrase"
+          },
+          "title": "Dictionary",
+          "type": "array"
+        },
+        "markers": {
+          "title": "Markers",
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "dictionary_overflow",
+            "extraction_unavailable",
+            "empty"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/StructureSegment"
+          },
+          "title": "Segments",
+          "type": "array"
+        },
+        "score_hash": {
+          "title": "Score Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dictionary",
+        "markers",
+        "status",
+        "segments",
+        "score_hash"
+      ],
+      "title": "StructurePlaybackPlan",
+      "type": "object"
+    },
+    "StructureRow": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "a": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "A"
+        },
+        "b": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "B"
+        },
+        "status": {
+          "enum": [
+            "equal",
+            "different",
+            "unknown",
+            "absent",
+            "unsupported"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "row_id",
+        "a",
+        "b",
+        "status"
+      ],
+      "title": "StructureRow",
+      "type": "object"
+    },
+    "StructureSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "title": "Index",
+          "type": "integer"
+        },
+        "start_row": {
+          "title": "Start Row",
+          "type": "integer"
+        },
+        "end_row": {
+          "title": "End Row",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "tones": {
+          "items": {
+            "$ref": "#/$defs/StructureTone"
+          },
+          "title": "Tones",
+          "type": "array"
+        }
+      },
+      "required": [
+        "index",
+        "start_row",
+        "end_row",
+        "duration_ms",
+        "tones"
+      ],
+      "title": "StructureSegment",
+      "type": "object"
+    },
+    "StructureTone": {
+      "additionalProperties": false,
+      "properties": {
+        "at_ms": {
+          "minimum": 0,
+          "title": "At Ms",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "midi": {
+          "maximum": 127,
+          "minimum": 0,
+          "title": "Midi",
+          "type": "integer"
+        },
+        "side": {
+          "enum": [
+            "A",
+            "B"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Event Id"
+        },
+        "row_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "structure",
+            "difference_marker",
+            "absent",
+            "unknown",
+            "unsupported"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "at_ms",
+        "duration_ms",
+        "midi",
+        "side",
+        "event_id",
+        "row_id",
+        "role"
+      ],
+      "title": "StructureTone",
+      "type": "object"
+    },
+    "SyntaxEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "branch",
+            "loop",
+            "call",
+            "declaration",
+            "assignment",
+            "return",
+            "throw",
+            "block",
+            "function_boundary",
+            "unsupported"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Id"
+        },
+        "depth": {
+          "minimum": 0,
+          "title": "Depth",
+          "type": "integer"
+        },
+        "context": {
+          "title": "Context",
+          "type": "string"
+        },
+        "syntax": {
+          "title": "Syntax",
+          "type": "string"
+        },
+        "shape": {
+          "title": "Shape",
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/SyntaxLocation"
+        },
+        "call_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Call Key"
+        },
+        "call_identity": {
+          "anyOf": [
+            {
+              "enum": [
+                "static_target",
+                "same_expression"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Call Identity"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "kind",
+        "order",
+        "parent_id",
+        "depth",
+        "context",
+        "syntax",
+        "shape",
+        "location",
+        "label"
+      ],
+      "title": "SyntaxEvent",
+      "type": "object"
+    },
+    "SyntaxLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "start_column": {
+          "minimum": 1,
+          "title": "Start Column",
+          "type": "integer"
+        },
+        "end_column": {
+          "minimum": 1,
+          "title": "End Column",
+          "type": "integer"
+        },
+        "start_offset": {
+          "minimum": 0,
+          "title": "Start Offset",
+          "type": "integer"
+        },
+        "end_offset": {
+          "minimum": 0,
+          "title": "End Offset",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "start_line",
+        "end_line",
+        "start_column",
+        "end_column",
+        "start_offset",
+        "end_offset"
+      ],
+      "title": "SyntaxLocation",
+      "type": "object"
+    },
+    "SyntaxProjection": {
+      "additionalProperties": false,
+      "properties": {
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "source_hash": {
+          "title": "Source Hash",
+          "type": "string"
+        },
+        "unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/SyntaxLocation"
+        },
+        "signature": {
+          "title": "Signature",
+          "type": "string"
+        },
+        "extraction_version": {
+          "const": "ts-syntax-v1",
+          "default": "ts-syntax-v1",
+          "title": "Extraction Version",
+          "type": "string"
+        },
+        "normalization_version": {
+          "const": "ast-trivia-only-v1",
+          "default": "ast-trivia-only-v1",
+          "title": "Normalization Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "empty",
+            "unsupported",
+            "parse_failed",
+            "out_of_scope"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "diagnostics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/SyntaxEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "source_hash",
+        "unit_id",
+        "label",
+        "location",
+        "signature",
+        "status",
+        "diagnostics",
+        "events"
+      ],
+      "title": "SyntaxProjection",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "export_version": {
+      "const": "code-groove-comparison-v1",
+      "default": "code-groove-comparison-v1",
+      "title": "Export Version",
+      "type": "string"
+    },
+    "material_id": {
+      "title": "Material Id",
+      "type": "string"
+    },
+    "code_revision": {
+      "title": "Code Revision",
+      "type": "string"
+    },
+    "comparison": {
+      "$ref": "#/$defs/StructureComparison"
+    },
+    "playback": {
+      "$ref": "#/$defs/StructurePlaybackPlan"
+    },
+    "agent_context": {
+      "additionalProperties": true,
+      "title": "Agent Context",
+      "type": "object"
+    },
+    "presentation": {
+      "additionalProperties": true,
+      "title": "Presentation",
+      "type": "object"
+    },
+    "record": {
+      "$ref": "#/$defs/ComparisonHumanRecord"
+    },
+    "exported_at": {
+      "title": "Exported At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "material_id",
+    "code_revision",
+    "comparison",
+    "playback",
+    "agent_context",
+    "presentation",
+    "record",
+    "exported_at"
+  ],
+  "title": "ComparisonExport",
+  "type": "object"
+}

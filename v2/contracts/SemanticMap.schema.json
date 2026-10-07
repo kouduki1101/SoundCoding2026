@@ -1,0 +1,954 @@
+{
+  "$defs": {
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "indexed_source_files": {
+          "minimum": 0,
+          "title": "Indexed Source Files",
+          "type": "integer"
+        },
+        "eligible_source_files": {
+          "minimum": 0,
+          "title": "Eligible Source Files",
+          "type": "integer"
+        },
+        "indexed_units": {
+          "minimum": 0,
+          "title": "Indexed Units",
+          "type": "integer"
+        },
+        "inspected_units": {
+          "minimum": 0,
+          "title": "Inspected Units",
+          "type": "integer"
+        },
+        "unresolved_unit_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Unresolved Unit Ids",
+          "type": "array"
+        },
+        "excluded_paths": {
+          "items": {
+            "$ref": "#/$defs/ExcludedPath"
+          },
+          "title": "Excluded Paths",
+          "type": "array"
+        },
+        "inspected_line_ranges": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Inspected Line Ranges",
+          "type": "array"
+        }
+      },
+      "required": [
+        "indexed_source_files",
+        "eligible_source_files",
+        "indexed_units",
+        "inspected_units",
+        "unresolved_unit_ids",
+        "excluded_paths",
+        "inspected_line_ranges"
+      ],
+      "title": "Coverage",
+      "type": "object"
+    },
+    "DesignComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "pattern_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Pattern Id",
+          "type": "string"
+        },
+        "reference_unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Reference Unit Id",
+          "type": "string"
+        },
+        "reference_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "reference_evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Reference Evidence Ids",
+          "type": "array"
+        },
+        "observed_difference": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observed Difference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pattern_id",
+        "reference_unit_id",
+        "reference_span",
+        "reference_evidence_ids",
+        "observed_difference"
+      ],
+      "title": "DesignComparison",
+      "type": "object"
+    },
+    "DesignPattern": {
+      "additionalProperties": false,
+      "properties": {
+        "pattern_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Pattern Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 48,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "domain_rule",
+            "responsibility",
+            "layer_boundary",
+            "dependency_direction",
+            "error_strategy",
+            "naming"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "scope_note": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Scope Note",
+          "type": "string"
+        },
+        "peer_unit_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 2,
+          "title": "Peer Unit Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "exceptions": {
+          "items": {
+            "$ref": "#/$defs/PatternException"
+          },
+          "maxItems": 6,
+          "title": "Exceptions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "pattern_id",
+        "label",
+        "kind",
+        "description",
+        "scope_note",
+        "peer_unit_ids",
+        "evidence_ids"
+      ],
+      "title": "DesignPattern",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "projection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Projection Sha256",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "code",
+            "test",
+            "document"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "created_by_tool_event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Created By Tool Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "snapshot_id",
+        "span",
+        "projection_sha256",
+        "source_kind",
+        "observation",
+        "created_by_tool_event_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "ExcludedPath": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "reason"
+      ],
+      "title": "ExcludedPath",
+      "type": "object"
+    },
+    "Hypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "counter_question": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Counter Question",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "open",
+            "supported",
+            "rejected",
+            "undetermined"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "statement",
+        "counter_question",
+        "evidence_ids",
+        "status"
+      ],
+      "title": "Hypothesis",
+      "type": "object"
+    },
+    "ImplementationUnit": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "primary_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "member_symbol_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Member Symbol Ids",
+          "type": "array"
+        },
+        "role": {
+          "enum": [
+            "policy",
+            "calculation",
+            "adapter",
+            "orchestrator",
+            "other"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "review_state": {
+          "enum": [
+            "inspected",
+            "unresolved",
+            "excluded"
+          ],
+          "title": "Review State",
+          "type": "string"
+        },
+        "boundary_reason": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Boundary Reason",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "label",
+        "primary_span",
+        "member_symbol_ids",
+        "role",
+        "review_state",
+        "boundary_reason",
+        "evidence_ids"
+      ],
+      "title": "ImplementationUnit",
+      "type": "object"
+    },
+    "MeaningEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "concept_key": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Concept Key",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 48,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "meaning": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Meaning",
+          "type": "string"
+        },
+        "responsibility_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Responsibility Id",
+          "type": "string"
+        },
+        "unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "semantic_order": {
+          "minimum": 0,
+          "title": "Semantic Order",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "decision",
+            "calculation",
+            "update"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "state": {
+          "enum": [
+            "grounded",
+            "unresolved"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "concept_key",
+        "label",
+        "meaning",
+        "responsibility_id",
+        "unit_id",
+        "semantic_order",
+        "kind",
+        "span",
+        "evidence_ids",
+        "state"
+      ],
+      "title": "MeaningEvent",
+      "type": "object"
+    },
+    "PatternException": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "reason",
+        "evidence_ids"
+      ],
+      "title": "PatternException",
+      "type": "object"
+    },
+    "RepositoryProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "purpose": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "assumptions": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "unknowns": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Unknowns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "purpose",
+        "assumptions",
+        "unknowns"
+      ],
+      "title": "RepositoryProfile",
+      "type": "object"
+    },
+    "Responsibility": {
+      "additionalProperties": false,
+      "properties": {
+        "responsibility_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Responsibility Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 24,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "definition": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Definition",
+          "type": "string"
+        },
+        "change_reason": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Change Reason",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "motif_id": {
+          "enum": [
+            "M0",
+            "M1",
+            "M2",
+            "M3",
+            "M4",
+            "M5"
+          ],
+          "title": "Motif Id",
+          "type": "string"
+        },
+        "display_order": {
+          "minimum": 0,
+          "title": "Display Order",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "responsibility_id",
+        "label",
+        "definition",
+        "change_reason",
+        "evidence_ids",
+        "motif_id",
+        "display_order"
+      ],
+      "title": "Responsibility",
+      "type": "object"
+    },
+    "ReviewSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "signal_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Signal Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "policy_scattering",
+            "responsibility_mixing",
+            "change_coupling",
+            "data_flow_opacity",
+            "justified_boundary",
+            "implementation_risk"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "review_axis": {
+          "default": "coherence",
+          "enum": [
+            "correctness",
+            "quality",
+            "coherence"
+          ],
+          "title": "Review Axis",
+          "type": "string"
+        },
+        "comparison": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DesignComparison"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "human_review_required": {
+          "default": false,
+          "title": "Human Review Required",
+          "type": "boolean"
+        },
+        "human_review_reason": {
+          "default": "",
+          "maxLength": 160,
+          "title": "Human Review Reason",
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "concern",
+            "justified",
+            "inconclusive"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 48,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "explanation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "alternative": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Alternative",
+          "type": "string"
+        },
+        "counter_explanation": {
+          "default": "",
+          "maxLength": 800,
+          "title": "Counter Explanation",
+          "type": "string"
+        },
+        "counter_status": {
+          "default": "not_checked",
+          "enum": [
+            "not_checked",
+            "supported",
+            "rejected",
+            "undetermined"
+          ],
+          "title": "Counter Status",
+          "type": "string"
+        },
+        "change_scenario": {
+          "default": "",
+          "maxLength": 800,
+          "title": "Change Scenario",
+          "type": "string"
+        },
+        "alternative_evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Alternative Evidence Ids",
+          "type": "array"
+        },
+        "unit_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Unit Ids",
+          "type": "array"
+        },
+        "event_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Event Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "signal_id",
+        "category",
+        "verdict",
+        "label",
+        "explanation",
+        "alternative",
+        "unit_ids",
+        "event_ids",
+        "evidence_ids"
+      ],
+      "title": "ReviewSignal",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "File Id",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file_id",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Span",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "profile": {
+      "$ref": "#/$defs/RepositoryProfile"
+    },
+    "responsibilities": {
+      "items": {
+        "$ref": "#/$defs/Responsibility"
+      },
+      "maxItems": 6,
+      "minItems": 1,
+      "title": "Responsibilities",
+      "type": "array"
+    },
+    "units": {
+      "items": {
+        "$ref": "#/$defs/ImplementationUnit"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Units",
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/MeaningEvent"
+      },
+      "maxItems": 96,
+      "title": "Events",
+      "type": "array"
+    },
+    "hypotheses": {
+      "items": {
+        "$ref": "#/$defs/Hypothesis"
+      },
+      "maxItems": 16,
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "review_signals": {
+      "items": {
+        "$ref": "#/$defs/ReviewSignal"
+      },
+      "maxItems": 12,
+      "title": "Review Signals",
+      "type": "array"
+    },
+    "design_patterns": {
+      "items": {
+        "$ref": "#/$defs/DesignPattern"
+      },
+      "maxItems": 8,
+      "title": "Design Patterns",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "analysis_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "project_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "parent_analysis_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Analysis Id"
+    },
+    "integration_chunk_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 4,
+      "title": "Integration Chunk Ids",
+      "type": "array"
+    },
+    "analysis_depth": {
+      "default": "focused",
+      "enum": [
+        "overview",
+        "focused"
+      ],
+      "title": "Analysis Depth",
+      "type": "string"
+    },
+    "origin": {
+      "enum": [
+        "live",
+        "recorded_live",
+        "fixture"
+      ],
+      "title": "Origin",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "coverage": {
+      "$ref": "#/$defs/Coverage"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "prompt_version": {
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "profile",
+    "responsibilities",
+    "units",
+    "events",
+    "hypotheses",
+    "schema_version",
+    "analysis_id",
+    "project_id",
+    "snapshot_id",
+    "origin",
+    "evidence",
+    "coverage",
+    "model_id",
+    "prompt_version",
+    "created_at"
+  ],
+  "title": "SemanticMap",
+  "type": "object"
+}

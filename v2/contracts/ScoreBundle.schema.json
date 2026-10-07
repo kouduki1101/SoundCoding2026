@@ -1,0 +1,374 @@
+{
+  "$defs": {
+    "Phrase": {
+      "additionalProperties": false,
+      "properties": {
+        "phrase_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Phrase Id",
+          "type": "string"
+        },
+        "start_bar": {
+          "minimum": 0,
+          "title": "Start Bar",
+          "type": "integer"
+        },
+        "bar_count": {
+          "minimum": 1,
+          "title": "Bar Count",
+          "type": "integer"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "unit_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Id"
+        },
+        "responsibility_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Responsibility Id"
+        }
+      },
+      "required": [
+        "phrase_id",
+        "start_bar",
+        "bar_count",
+        "label"
+      ],
+      "title": "Phrase",
+      "type": "object"
+    },
+    "ScheduledNote": {
+      "additionalProperties": false,
+      "properties": {
+        "note_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Note Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "data",
+            "pulse",
+            "accompaniment",
+            "cue"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Id"
+        },
+        "responsibility_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Responsibility Id"
+        },
+        "unit_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Id"
+        },
+        "tick": {
+          "minimum": 0,
+          "title": "Tick",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "voice": {
+          "enum": [
+            "kick",
+            "snare",
+            "hat",
+            "wood",
+            "bass",
+            "piano",
+            "vibes"
+          ],
+          "title": "Voice",
+          "type": "string"
+        },
+        "midi": {
+          "anyOf": [
+            {
+              "maximum": 96,
+              "minimum": 24,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Midi"
+        },
+        "signal_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signal Id"
+        },
+        "variant": {
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Variant",
+          "type": "integer"
+        },
+        "velocity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Velocity",
+          "type": "number"
+        },
+        "pan": {
+          "maximum": 1,
+          "minimum": -1,
+          "title": "Pan",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "note_id",
+        "kind",
+        "tick",
+        "duration_ms",
+        "voice",
+        "variant",
+        "velocity",
+        "pan",
+        "evidence_ids"
+      ],
+      "title": "ScheduledNote",
+      "type": "object"
+    },
+    "ScorePlan": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "theme",
+            "repo"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "scene_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "grammar_version": {
+          "enum": [
+            "groove-v1",
+            "groove-jazz-v2",
+            "groove-rhythm-v3",
+            "groove-arrangement-v4",
+            "groove-chamber-v5",
+            "groove-chamber-v6",
+            "groove-chamber-v7",
+            "groove-chamber-v8",
+            "groove-chamber-v9",
+            "groove-chamber-v10"
+          ],
+          "title": "Grammar Version",
+          "type": "string"
+        },
+        "kit_id": {
+          "enum": [
+            "paper-studio-v1",
+            "midnight-jazz-v2",
+            "midnight-jazz-v3",
+            "midnight-jazz-v4"
+          ],
+          "title": "Kit Id",
+          "type": "string"
+        },
+        "kit_hash": {
+          "title": "Kit Hash",
+          "type": "string"
+        },
+        "bpm": {
+          "const": 96,
+          "title": "Bpm",
+          "type": "integer"
+        },
+        "beats_per_bar": {
+          "const": 4,
+          "title": "Beats Per Bar",
+          "type": "integer"
+        },
+        "steps_per_bar": {
+          "const": 16,
+          "title": "Steps Per Bar",
+          "type": "integer"
+        },
+        "ppq": {
+          "const": 480,
+          "title": "Ppq",
+          "type": "integer"
+        },
+        "total_bars": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Total Bars",
+          "type": "integer"
+        },
+        "phrases": {
+          "items": {
+            "$ref": "#/$defs/Phrase"
+          },
+          "title": "Phrases",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "$ref": "#/$defs/ScheduledNote"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "mode",
+        "scene_id",
+        "grammar_version",
+        "kit_id",
+        "kit_hash",
+        "bpm",
+        "beats_per_bar",
+        "steps_per_bar",
+        "ppq",
+        "total_bars",
+        "phrases",
+        "notes"
+      ],
+      "title": "ScorePlan",
+      "type": "object"
+    },
+    "ScoreScene": {
+      "additionalProperties": false,
+      "properties": {
+        "scene_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "unit_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 96,
+          "title": "Unit Ids",
+          "type": "array"
+        },
+        "theme": {
+          "$ref": "#/$defs/ScorePlan"
+        },
+        "repo": {
+          "$ref": "#/$defs/ScorePlan"
+        }
+      },
+      "required": [
+        "scene_id",
+        "unit_ids",
+        "theme",
+        "repo"
+      ],
+      "title": "ScoreScene",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "score_hash": {
+      "title": "Score Hash",
+      "type": "string"
+    },
+    "scenes": {
+      "items": {
+        "$ref": "#/$defs/ScoreScene"
+      },
+      "title": "Scenes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "analysis_id",
+    "score_hash",
+    "scenes"
+  ],
+  "title": "ScoreBundle",
+  "type": "object"
+}

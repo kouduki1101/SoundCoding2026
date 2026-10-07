@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#7c8290" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:Arial,sans-serif;fill:#232735}.title{font-size:42px;font-weight:700}.sub{font-size:20px;fill:#727989}.label{font-size:24px;font-weight:700}.small{font-size:17px;fill:#576171}.box{fill:#fff;stroke:#d8dde5;stroke-width:2;rx:18}.line{fill:none;stroke:#7c8290;stroke-width:2;marker-end:url(#arrow)}.boundary{fill:#eef2ff;stroke:#cad4ef;stroke-width:2;rx:26}.eyebrow{font-size:16px;font-weight:700;letter-spacing:2px;fill:#52689e}
+    </style>
+  </defs>
+  <rect width="1440" height="920" fill="#f7f8fa"/>
+  <text x="64" y="78" class="title">Code Groove</text>
+  <text x="64" y="114" class="sub">Investigate design. Hear its rhythm. Follow exact source evidence.</text>
+  <rect x="64" y="172" width="278" height="166" class="box"/>
+  <text x="88" y="212" class="label">Browser workspace</text>
+  <text x="88" y="246" class="small">React · Monaco · Tone.js</text>
+  <text x="88" y="274" class="small">Clips / notes / code evidence</text>
+  <text x="88" y="305" class="small">Replay: zero model calls</text>
+  <rect x="64" y="407" width="278" height="119" class="box"/>
+  <text x="88" y="449" class="label">Firebase Auth</text>
+  <text x="88" y="482" class="small">Invited email / password</text>
+  <text x="88" y="508" class="small">No email receipt required</text>
+  <rect x="402" y="166" width="971" height="589" class="boundary"/>
+  <text x="429" y="199" class="eyebrow">GOOGLE CLOUD · artful-bonsai-491601-p3 · TOKYO</text>
+  <rect x="431" y="220" width="280" height="164" class="box"/>
+  <text x="455" y="258" class="label">Cloud Run · Web</text>
+  <text x="455" y="291" class="small">Public UI / protected API</text>
+  <text x="455" y="319" class="small">Ownership · quotas · expiry</text>
+  <text x="455" y="352" class="small">Min 0 / max 2 instances</text>
+  <rect x="779" y="220" width="231" height="164" class="box"/>
+  <text x="802" y="258" class="label">Cloud Tasks</text>
+  <text x="802" y="291" class="small">OIDC · concurrency 1</text>
+  <text x="802" y="319" class="small">Retries · durable queue</text>
+  <text x="802" y="352" class="small">Cancel / delete tasks</text>
+  <rect x="1080" y="220" width="264" height="218" class="box"/>
+  <text x="1102" y="258" class="label">Cloud Run · Worker</text>
+  <text x="1102" y="291" class="small">Private · lease / heartbeat</text>
+  <text x="1102" y="319" class="small">Bounded agent tool loop</text>
+  <text x="1102" y="347" class="small">Read / search / relations</text>
+  <text x="1102" y="375" class="small">Draft / review / compose</text>
+  <text x="1102" y="406" class="small">Min 0 / max 1 instance</text>
+  <rect x="431" y="568" width="253" height="155" class="box"/>
+  <text x="453" y="607" class="label">Firestore</text>
+  <text x="453" y="640" class="small">Projects · runs · drafts</text>
+  <text x="453" y="668" class="small">Atomic token reservations</text>
+  <text x="453" y="697" class="small">API expiry 7 days · TTL</text>
+  <rect x="715" y="568" width="254" height="155" class="box"/>
+  <text x="738" y="607" class="label">Cloud Storage</text>
+  <text x="738" y="640" class="small">Private pinned snapshots</text>
+  <text x="738" y="668" class="small">Maps · scores · traces</text>
+  <text x="738" y="697" class="small">Hashes · lifecycle 14 days</text>
+  <rect x="1001" y="568" width="343" height="155" class="box"/>
+  <text x="1024" y="607" class="label">Gemini API on Vertex</text>
+  <text x="1024" y="640" class="small">ADK + Gen AI · global endpoint</text>
+  <text x="1024" y="668" class="small">Read / draft tools · human approval</text>
+  <text x="1024" y="697" class="small">Token / call limits · kill switch</text>
+  <path d="M342 252H431" class="line"/>
+  <path d="M200 338V407" class="line"/>
+  <path d="M342 465H374V354H431" class="line"/>
+  <path d="M711 284H779" class="line"/>
+  <path d="M1010 284H1080" class="line"/>
+  <path d="M565 384V568" class="line"/>
+  <path d="M670 384V485H842V568" class="line"/>
+  <path d="M1120 438V511H900V568" class="line"/>
+  <path d="M1150 438V540H639V568" class="line"/>
+  <path d="M1240 438V568" class="line"/>
+  <rect x="64" y="800" width="1309" height="81" class="box"/>
+  <text x="87" y="834" class="label" font-size="21">GitHub Actions → WIF → Cloud Build → Artifact Registry → Cloud Run</text>
+  <text x="87" y="863" class="small">No service-account keys · main / production only · Secret Manager reviewer password · ¥6,000 infrastructure budget alerts</text>
+</svg>

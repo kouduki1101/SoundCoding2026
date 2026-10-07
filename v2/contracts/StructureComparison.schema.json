@@ -1,0 +1,331 @@
+{
+  "$defs": {
+    "StructureRow": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "a": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "A"
+        },
+        "b": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "B"
+        },
+        "status": {
+          "enum": [
+            "equal",
+            "different",
+            "unknown",
+            "absent",
+            "unsupported"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "row_id",
+        "a",
+        "b",
+        "status"
+      ],
+      "title": "StructureRow",
+      "type": "object"
+    },
+    "SyntaxEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "branch",
+            "loop",
+            "call",
+            "declaration",
+            "assignment",
+            "return",
+            "throw",
+            "block",
+            "function_boundary",
+            "unsupported"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Id"
+        },
+        "depth": {
+          "minimum": 0,
+          "title": "Depth",
+          "type": "integer"
+        },
+        "context": {
+          "title": "Context",
+          "type": "string"
+        },
+        "syntax": {
+          "title": "Syntax",
+          "type": "string"
+        },
+        "shape": {
+          "title": "Shape",
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/SyntaxLocation"
+        },
+        "call_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Call Key"
+        },
+        "call_identity": {
+          "anyOf": [
+            {
+              "enum": [
+                "static_target",
+                "same_expression"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Call Identity"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "kind",
+        "order",
+        "parent_id",
+        "depth",
+        "context",
+        "syntax",
+        "shape",
+        "location",
+        "label"
+      ],
+      "title": "SyntaxEvent",
+      "type": "object"
+    },
+    "SyntaxLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "start_column": {
+          "minimum": 1,
+          "title": "Start Column",
+          "type": "integer"
+        },
+        "end_column": {
+          "minimum": 1,
+          "title": "End Column",
+          "type": "integer"
+        },
+        "start_offset": {
+          "minimum": 0,
+          "title": "Start Offset",
+          "type": "integer"
+        },
+        "end_offset": {
+          "minimum": 0,
+          "title": "End Offset",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "start_line",
+        "end_line",
+        "start_column",
+        "end_column",
+        "start_offset",
+        "end_offset"
+      ],
+      "title": "SyntaxLocation",
+      "type": "object"
+    },
+    "SyntaxProjection": {
+      "additionalProperties": false,
+      "properties": {
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "source_hash": {
+          "title": "Source Hash",
+          "type": "string"
+        },
+        "unit_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/SyntaxLocation"
+        },
+        "signature": {
+          "title": "Signature",
+          "type": "string"
+        },
+        "extraction_version": {
+          "const": "ts-syntax-v1",
+          "default": "ts-syntax-v1",
+          "title": "Extraction Version",
+          "type": "string"
+        },
+        "normalization_version": {
+          "const": "ast-trivia-only-v1",
+          "default": "ast-trivia-only-v1",
+          "title": "Normalization Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "empty",
+            "unsupported",
+            "parse_failed",
+            "out_of_scope"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "diagnostics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/SyntaxEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "source_hash",
+        "unit_id",
+        "label",
+        "location",
+        "signature",
+        "status",
+        "diagnostics",
+        "events"
+      ],
+      "title": "SyntaxProjection",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "comparison_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Comparison Id",
+      "type": "string"
+    },
+    "alignment_version": {
+      "const": "unique-monotone-v1",
+      "default": "unique-monotone-v1",
+      "title": "Alignment Version",
+      "type": "string"
+    },
+    "a": {
+      "$ref": "#/$defs/SyntaxProjection"
+    },
+    "b": {
+      "$ref": "#/$defs/SyntaxProjection"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/StructureRow"
+      },
+      "title": "Rows",
+      "type": "array"
+    }
+  },
+  "required": [
+    "comparison_id",
+    "a",
+    "b",
+    "rows"
+  ],
+  "title": "StructureComparison",
+  "type": "object"
+}

@@ -1,0 +1,275 @@
+{
+  "$defs": {
+    "ComparisonInvestigationRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "comparison_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "unit_a": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit A",
+          "type": "string"
+        },
+        "unit_b": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Unit B",
+          "type": "string"
+        },
+        "source_hash_a": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Hash A",
+          "type": "string"
+        },
+        "source_hash_b": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Hash B",
+          "type": "string"
+        },
+        "start_row": {
+          "minimum": 0,
+          "title": "Start Row",
+          "type": "integer"
+        },
+        "end_row": {
+          "exclusiveMinimum": 0,
+          "title": "End Row",
+          "type": "integer"
+        },
+        "expectation": {
+          "maxLength": 1000,
+          "title": "Expectation",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 1000,
+          "title": "Observation",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "snapshot_id",
+        "comparison_id",
+        "unit_a",
+        "unit_b",
+        "source_hash_a",
+        "source_hash_b",
+        "start_row",
+        "end_row",
+        "expectation",
+        "observation",
+        "question"
+      ],
+      "title": "ComparisonInvestigationRequest",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "projection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Projection Sha256",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "code",
+            "test",
+            "document"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "observation": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "created_by_tool_event_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "Created By Tool Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "snapshot_id",
+        "span",
+        "projection_sha256",
+        "source_kind",
+        "observation",
+        "created_by_tool_event_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+          "title": "File Id",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file_id",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Span",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "interpretation": {
+      "enum": [
+        "maintained",
+        "revised",
+        "inconclusive"
+      ],
+      "title": "Interpretation",
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "counter_explanation": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Counter Explanation",
+      "type": "string"
+    },
+    "unknowns": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 12,
+      "title": "Unknowns",
+      "type": "array"
+    },
+    "evidence_ids": {
+      "items": {
+        "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+        "type": "string"
+      },
+      "maxItems": 96,
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "kind": {
+      "const": "structure_comparison",
+      "default": "structure_comparison",
+      "title": "Kind",
+      "type": "string"
+    },
+    "investigation_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "base_analysis_id": {
+      "pattern": "^[a-zA-Z0-9_-]{1,80}$",
+      "title": "Base Analysis Id",
+      "type": "string"
+    },
+    "origin": {
+      "enum": [
+        "live",
+        "fixture"
+      ],
+      "title": "Origin",
+      "type": "string"
+    },
+    "request": {
+      "$ref": "#/$defs/ComparisonInvestigationRequest"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "interpretation",
+    "summary",
+    "reason",
+    "counter_explanation",
+    "unknowns",
+    "evidence_ids",
+    "investigation_id",
+    "base_analysis_id",
+    "origin",
+    "request",
+    "evidence",
+    "model_id"
+  ],
+  "title": "ComparisonInvestigationResult",
+  "type": "object"
+}

@@ -1,0 +1,301 @@
+{
+  "kit_id": "midnight-jazz-v4",
+  "sample_rate": 44100,
+  "samples": [
+    {
+      "voice": "bass",
+      "variant": 0,
+      "base_midi": 28,
+      "file": "bass-0.wav",
+      "sha256": "198f5288791a1c6b9ea7029edc46dc1e93cad85911b68733bd7f62b7bd655e51"
+    },
+    {
+      "voice": "bass",
+      "variant": 1,
+      "base_midi": 31,
+      "file": "bass-1.wav",
+      "sha256": "4ed6e0d80517f819d8c821a9498f634a39c2cbf157f5d3cd1890233cebf4e83b"
+    },
+    {
+      "voice": "bass",
+      "variant": 2,
+      "base_midi": 34,
+      "file": "bass-2.wav",
+      "sha256": "09891f33069619defeacbc3891ce39de088cff7cb351fe1f04c5aeb8ec14e455"
+    },
+    {
+      "voice": "bass",
+      "variant": 3,
+      "base_midi": 37,
+      "file": "bass-3.wav",
+      "sha256": "17e7c0d0288174cacdf0837be6f486b54843c4387ca9471c5d9ebdfe6e01b18f"
+    },
+    {
+      "voice": "bass",
+      "variant": 4,
+      "base_midi": 40,
+      "file": "bass-4.wav",
+      "sha256": "d67db552c1b00f19fc1dfab9b303526cd3b2f4b5fc70a782df337df797c16b87"
+    },
+    {
+      "voice": "bass",
+      "variant": 5,
+      "base_midi": 43,
+      "file": "bass-5.wav",
+      "sha256": "3c1b5594966ce1fc9663c404744a89714f1336e29b9bc6eb5e4845946a0d1d17"
+    },
+    {
+      "voice": "piano",
+      "variant": 0,
+      "base_midi": 52,
+      "file": "piano-0.wav",
+      "sha256": "f06f8ddd8edb23aa8f3babc7c37c2fd0157d94ae7137cfe38f35871928526534"
+    },
+    {
+      "voice": "piano",
+      "variant": 1,
+      "base_midi": 60,
+      "file": "piano-1.wav",
+      "sha256": "47a22e84345261075696d98dd3adc8a2a33284400eba861b7c602149e909127a"
+    },
+    {
+      "voice": "piano",
+      "variant": 2,
+      "base_midi": 67,
+      "file": "piano-2.wav",
+      "sha256": "f22cf93d6e2f8c4e8a81040c36f1f8e3c9dfc114797501974fb2076055759520"
+    },
+    {
+      "voice": "piano",
+      "variant": 3,
+      "base_midi": 72,
+      "file": "piano-3.wav",
+      "sha256": "4b01ca3871fc33287b57884664bbbfc3026fc47d4e1ad7e257ebc3c87bcd0e8a"
+    },
+    {
+      "voice": "piano",
+      "variant": 4,
+      "base_midi": 79,
+      "file": "piano-4.wav",
+      "sha256": "86be0d1e5fd8c47d4713a3771eb9dc031fea0b96a2b4b2369ebc0d71de261ad2"
+    },
+    {
+      "voice": "piano",
+      "variant": 5,
+      "base_midi": 84,
+      "file": "piano-5.wav",
+      "sha256": "45ce5da5a756c3297b1f40dc95d536263b1fb29dd6d41eb24b39f15d2ed9613e"
+    },
+    {
+      "voice": "vibes",
+      "variant": 0,
+      "base_midi": 60,
+      "file": "vibes-0.wav",
+      "sha256": "cd21f84fdd5280bb22fe56421bc3f97cb7fd12ca2310968e781ed728d8271941"
+    },
+    {
+      "voice": "vibes",
+      "variant": 1,
+      "base_midi": 60,
+      "file": "vibes-1.wav",
+      "sha256": "4b216a23913bae824c3b0af3ef0f32c4dfe6750f681dfb0a9af7eed3c392e353"
+    },
+    {
+      "voice": "vibes",
+      "variant": 2,
+      "base_midi": 60,
+      "file": "vibes-2.wav",
+      "sha256": "c7c64ccb3046a4479469c79fa8574f8c192116b10662abb538bbb8b0dfb3eaf8"
+    },
+    {
+      "voice": "vibes",
+      "variant": 3,
+      "base_midi": 60,
+      "file": "vibes-3.wav",
+      "sha256": "202c8815bb094e048e8ad9c5aeb9f7b9bb7bfde761e00ab69778d49945972d7a"
+    },
+    {
+      "voice": "vibes",
+      "variant": 4,
+      "base_midi": 60,
+      "file": "vibes-4.wav",
+      "sha256": "2cc0556fc8470c8d8ee9fdda5cc3c2f522de201984b79afe481268eda5eafc89"
+    },
+    {
+      "voice": "vibes",
+      "variant": 5,
+      "base_midi": 60,
+      "file": "vibes-5.wav",
+      "sha256": "97c8b7876bcb2ff28b7c8ce95a214ae91115812b0c35d41b5515975b7b909a61"
+    },
+    {
+      "voice": "kick",
+      "variant": 0,
+      "base_midi": 60,
+      "file": "kick-0.wav",
+      "sha256": "8ebe55dd8aaa1a0074bf71bf111d998871bc384464538271805182b1007c6208"
+    },
+    {
+      "voice": "kick",
+      "variant": 1,
+      "base_midi": 60,
+      "file": "kick-1.wav",
+      "sha256": "8ebe55dd8aaa1a0074bf71bf111d998871bc384464538271805182b1007c6208"
+    },
+    {
+      "voice": "kick",
+      "variant": 2,
+      "base_midi": 60,
+      "file": "kick-2.wav",
+      "sha256": "8ebe55dd8aaa1a0074bf71bf111d998871bc384464538271805182b1007c6208"
+    },
+    {
+      "voice": "kick",
+      "variant": 3,
+      "base_midi": 60,
+      "file": "kick-3.wav",
+      "sha256": "8ebe55dd8aaa1a0074bf71bf111d998871bc384464538271805182b1007c6208"
+    },
+    {
+      "voice": "kick",
+      "variant": 4,
+      "base_midi": 60,
+      "file": "kick-4.wav",
+      "sha256": "8ebe55dd8aaa1a0074bf71bf111d998871bc384464538271805182b1007c6208"
+    },
+    {
+      "voice": "kick",
+      "variant": 5,
+      "base_midi": 60,
+      "file": "kick-5.wav",
+      "sha256": "8ebe55dd8aaa1a0074bf71bf111d998871bc384464538271805182b1007c6208"
+    },
+    {
+      "voice": "snare",
+      "variant": 0,
+      "base_midi": 60,
+      "file": "snare-0.wav",
+      "sha256": "d92e5b011352cd5238853166013b69abae9fb10fef5e69d45a6fc02ee822ac1b"
+    },
+    {
+      "voice": "snare",
+      "variant": 1,
+      "base_midi": 60,
+      "file": "snare-1.wav",
+      "sha256": "71f11c58382a502316e9af503f4714875d5d5934f2ec183cf53493f1ca1bc513"
+    },
+    {
+      "voice": "snare",
+      "variant": 2,
+      "base_midi": 60,
+      "file": "snare-2.wav",
+      "sha256": "28df59c9ec59bf11ca0f684145038c0a3b03006ec8b94fc34d58e636be379589"
+    },
+    {
+      "voice": "snare",
+      "variant": 3,
+      "base_midi": 60,
+      "file": "snare-3.wav",
+      "sha256": "db55220d0b449afe96425107b810c51fa9953c764835692fa825b6b1b7757611"
+    },
+    {
+      "voice": "snare",
+      "variant": 4,
+      "base_midi": 60,
+      "file": "snare-4.wav",
+      "sha256": "95b76bcb0994388e678d914c2766560ca7fcae57480999acfe82bc9843b9773f"
+    },
+    {
+      "voice": "snare",
+      "variant": 5,
+      "base_midi": 60,
+      "file": "snare-5.wav",
+      "sha256": "1f08f383b0e1e94e50b77da3d79911ef18d562fd8c730ee2d3358b081bd62461"
+    },
+    {
+      "voice": "hat",
+      "variant": 0,
+      "base_midi": 60,
+      "file": "hat-0.wav",
+      "sha256": "f85de6bf5734bc154c1beb1819e5428e691b6dc86a351af1c560166d0512f6f3"
+    },
+    {
+      "voice": "hat",
+      "variant": 1,
+      "base_midi": 60,
+      "file": "hat-1.wav",
+      "sha256": "9290308ca602d1ab9e09479f79ccbd258bf6e96f113a461596514b60f4161e3f"
+    },
+    {
+      "voice": "hat",
+      "variant": 2,
+      "base_midi": 60,
+      "file": "hat-2.wav",
+      "sha256": "acd7023ad7849768b1532f0fc18640261fe64402cb7990937ff74c5ac1d8984d"
+    },
+    {
+      "voice": "hat",
+      "variant": 3,
+      "base_midi": 60,
+      "file": "hat-3.wav",
+      "sha256": "01ae5b12c00b0b4ca64d9833b7fbc6f9a0f04bbd9e65cbd8c86da5af14f05a22"
+    },
+    {
+      "voice": "hat",
+      "variant": 4,
+      "base_midi": 60,
+      "file": "hat-4.wav",
+      "sha256": "6334ada5069a4f9590ab918abbbc23b272942ac1e1f92df5a9c8b19a45a8fa89"
+    },
+    {
+      "voice": "hat",
+      "variant": 5,
+      "base_midi": 60,
+      "file": "hat-5.wav",
+      "sha256": "cc87c6d1557f01cb7e38c080ad049d85eda03a61728ed7ec437184d70a16c68a"
+    },
+    {
+      "voice": "wood",
+      "variant": 0,
+      "base_midi": 60,
+      "file": "wood-0.wav",
+      "sha256": "ebccdc2c2ef3c868361bab2a2d29df70d782debb0459dd1bd956e18fc4daf06b"
+    },
+    {
+      "voice": "wood",
+      "variant": 1,
+      "base_midi": 60,
+      "file": "wood-1.wav",
+      "sha256": "ebccdc2c2ef3c868361bab2a2d29df70d782debb0459dd1bd956e18fc4daf06b"
+    },
+    {
+      "voice": "wood",
+      "variant": 2,
+      "base_midi": 60,
+      "file": "wood-2.wav",
+      "sha256": "ebccdc2c2ef3c868361bab2a2d29df70d782debb0459dd1bd956e18fc4daf06b"
+    },
+    {
+      "voice": "wood",
+      "variant": 3,
+      "base_midi": 60,
+      "file": "wood-3.wav",
+      "sha256": "ebccdc2c2ef3c868361bab2a2d29df70d782debb0459dd1bd956e18fc4daf06b"
+    },
+    {
+      "voice": "wood",
+      "variant": 4,
+      "base_midi": 60,
+      "file": "wood-4.wav",
+      "sha256": "ebccdc2c2ef3c868361bab2a2d29df70d782debb0459dd1bd956e18fc4daf06b"
+    },
+    {
+      "voice": "wood",
+      "variant": 5,
+      "base_midi": 60,
+      "file": "wood-5.wav",
+      "sha256": "ebccdc2c2ef3c868361bab2a2d29df70d782debb0459dd1bd956e18fc4daf06b"
+    }
+  ],
+  "kit_hash": "a302b56825512936a014a556a88819affd50de65c9d68ff3acb544702dc919f7"
+}

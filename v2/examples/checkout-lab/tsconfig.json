@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "paths": { "@checkout/*": ["../../fixtures/repos/checkout-flow/src/*"] }
+  },
+  "include": ["*.ts"]
+}

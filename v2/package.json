@@ -1,0 +1,56 @@
+{
+  "name": "code-groove",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@10.27.0",
+  "pnpm": {
+    "overrides": {
+      "@grpc/grpc-js": "1.14.5",
+      "dompurify": "3.4.16"
+    }
+  },
+  "scripts": {
+    "build": "pnpm build:tools && vite build --config apps/web/vite.config.ts",
+    "build:static": "pnpm build:tools && vite build --config apps/web/vite.config.ts --mode static",
+    "preview:static": "vite preview --config apps/web/vite.config.ts --mode static --port 4173",
+    "build:tools": "node scripts/build-tools.mjs",
+    "dev:web": "vite --config apps/web/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint apps/web/src packages scripts/*.mjs",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:changed": "node scripts/test-changed.mjs",
+    "sample:checkout": "node examples/checkout-lab/runner.mjs",
+    "test:sample": "playwright test --config examples/checkout-lab/playwright.config.ts"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "4.7.0",
+    "@tanstack/react-query": "5.104.0",
+    "ajv": "8.20.0",
+    "firebase": "12.19.0",
+    "lucide-react": "1.49.0",
+    "monaco-editor": "0.57.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tone": "15.1.22",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "esbuild": "0.28.2",
+    "eslint": "10.11.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "json-schema-to-typescript": "16.0.0",
+    "prettier": "3.9.9",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.71.0",
+    "vite": "8.3.2",
+    "vitest": "5.0.3"
+  }
+}

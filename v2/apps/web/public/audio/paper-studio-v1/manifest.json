@@ -1,0 +1,218 @@
+{
+  "kit_id": "paper-studio-v1",
+  "seed": 20261002,
+  "sample_rate": 44100,
+  "samples": [
+    {
+      "voice": "kick",
+      "variant": 0,
+      "file": "kick-0.wav",
+      "duration_ms": 180,
+      "sha256": "938295dc009a2b1b2ef769bc8131184993d9d3d1ee4b74b9f451ce3d06d9bae5"
+    },
+    {
+      "voice": "kick",
+      "variant": 1,
+      "file": "kick-1.wav",
+      "duration_ms": 180,
+      "sha256": "666791965e619acb8370b97f90738744b392e2f2cbf8308ade2c07110cfd7ac2"
+    },
+    {
+      "voice": "kick",
+      "variant": 2,
+      "file": "kick-2.wav",
+      "duration_ms": 180,
+      "sha256": "568bedf98de19a32f95de99a8203d9b814529140ad85f558dd03a723c00884b0"
+    },
+    {
+      "voice": "kick",
+      "variant": 3,
+      "file": "kick-3.wav",
+      "duration_ms": 180,
+      "sha256": "4d0f416d1524a0dd24574ef7a94cba5da0152dbf6940fd42ad92b586266d08fc"
+    },
+    {
+      "voice": "kick",
+      "variant": 4,
+      "file": "kick-4.wav",
+      "duration_ms": 180,
+      "sha256": "7dc65917fcfbbad9f7b636c4592165eee453d91124b9bb32803568801f69e939"
+    },
+    {
+      "voice": "kick",
+      "variant": 5,
+      "file": "kick-5.wav",
+      "duration_ms": 180,
+      "sha256": "d05de9dadc38b0feac0d66f1216cad3c1442df2dcbaaadf5d1d37782bb278fe3"
+    },
+    {
+      "voice": "snare",
+      "variant": 0,
+      "file": "snare-0.wav",
+      "duration_ms": 120,
+      "sha256": "8fc8426b114c24de9c5d2e63b56092d88ae1911833d7c366cbcb7e0784bc9e8a"
+    },
+    {
+      "voice": "snare",
+      "variant": 1,
+      "file": "snare-1.wav",
+      "duration_ms": 120,
+      "sha256": "9530b61d40c6cc7fc21edf240581498e202dfa01292705104c81dc601f2489a7"
+    },
+    {
+      "voice": "snare",
+      "variant": 2,
+      "file": "snare-2.wav",
+      "duration_ms": 120,
+      "sha256": "c2be3ab655aa3f6f775789ae3757666351c39651875e6d9fd00b161ff79777eb"
+    },
+    {
+      "voice": "snare",
+      "variant": 3,
+      "file": "snare-3.wav",
+      "duration_ms": 120,
+      "sha256": "499a7998549eb2b8f50dab598295cc220743bf7a5dc67a0fc406134fd850e458"
+    },
+    {
+      "voice": "snare",
+      "variant": 4,
+      "file": "snare-4.wav",
+      "duration_ms": 120,
+      "sha256": "5b9653e65b45f37550ce76bb3656e3247aac7b73e72e6e0b5d45cdb20cd14715"
+    },
+    {
+      "voice": "snare",
+      "variant": 5,
+      "file": "snare-5.wav",
+      "duration_ms": 120,
+      "sha256": "7c7128ae48b9d654672bd8cc86be938d28848cf2923d4d8654666cf649c0a602"
+    },
+    {
+      "voice": "hat",
+      "variant": 0,
+      "file": "hat-0.wav",
+      "duration_ms": 45,
+      "sha256": "22f0fb74f5c99309d3a1006f80b60ef7c060bc0626295ddf11bd86a4e4253018"
+    },
+    {
+      "voice": "hat",
+      "variant": 1,
+      "file": "hat-1.wav",
+      "duration_ms": 45,
+      "sha256": "6685a5b30f0fac00e59b08cc9b4ce2032c776542804df8ab643f7b097108a4dd"
+    },
+    {
+      "voice": "hat",
+      "variant": 2,
+      "file": "hat-2.wav",
+      "duration_ms": 45,
+      "sha256": "e21726929c6a74cc5704e31b76a1d26a7d128f9e9c4503c13d3dea93bca1ace6"
+    },
+    {
+      "voice": "hat",
+      "variant": 3,
+      "file": "hat-3.wav",
+      "duration_ms": 45,
+      "sha256": "efd0b5823c9201c846c90ae2196833ff33b1ace5e6adc2e7c8e8c0a2798f12e3"
+    },
+    {
+      "voice": "hat",
+      "variant": 4,
+      "file": "hat-4.wav",
+      "duration_ms": 45,
+      "sha256": "fff75ebffb1d308f1d47841c76bfc0969cd762aacab2cbe0a7e12afd204992dd"
+    },
+    {
+      "voice": "hat",
+      "variant": 5,
+      "file": "hat-5.wav",
+      "duration_ms": 45,
+      "sha256": "12af07ea7741aaa021b63057e3bae05bb8fd3b7279034b023380e7bb433b1e36"
+    },
+    {
+      "voice": "wood",
+      "variant": 0,
+      "file": "wood-0.wav",
+      "duration_ms": 90,
+      "sha256": "9e41edcdfdb0d3429f0dbcb2ef95a0e5c1814789931a85dda74e444075d1b96a"
+    },
+    {
+      "voice": "wood",
+      "variant": 1,
+      "file": "wood-1.wav",
+      "duration_ms": 90,
+      "sha256": "21f2f7c0c20a3d35daae411c384d0de2af11a594dd1603a9360f53a3f633b934"
+    },
+    {
+      "voice": "wood",
+      "variant": 2,
+      "file": "wood-2.wav",
+      "duration_ms": 90,
+      "sha256": "0c94e1658bf07585c05d2c2d62170059835628fa39ae45be27b8c0214e6553d9"
+    },
+    {
+      "voice": "wood",
+      "variant": 3,
+      "file": "wood-3.wav",
+      "duration_ms": 90,
+      "sha256": "cf33b6eec49d08928bae4b348fd1afdf4218ff4af92b795cc28a09adb417e080"
+    },
+    {
+      "voice": "wood",
+      "variant": 4,
+      "file": "wood-4.wav",
+      "duration_ms": 90,
+      "sha256": "583d652ee93f289735e125dd0f63853642cd435ac54708b317e2502e440aa10a"
+    },
+    {
+      "voice": "wood",
+      "variant": 5,
+      "file": "wood-5.wav",
+      "duration_ms": 90,
+      "sha256": "28ebbc332bfb0dfe6882028355b3d54b76d73e110b2a19fc4112dadda3a43cc8"
+    },
+    {
+      "voice": "bass",
+      "variant": 0,
+      "file": "bass-0.wav",
+      "duration_ms": 220,
+      "sha256": "5ce4e53858017a73bce39de4735664557d83e0c452ec77fc01735f2079e447f9"
+    },
+    {
+      "voice": "bass",
+      "variant": 1,
+      "file": "bass-1.wav",
+      "duration_ms": 220,
+      "sha256": "6e7ea6a842bdef011c7785ee3ad5e7ee5a445df34e404c16a9338385f647dc50"
+    },
+    {
+      "voice": "bass",
+      "variant": 2,
+      "file": "bass-2.wav",
+      "duration_ms": 220,
+      "sha256": "abbe6a24cd8cb6144eca54637282f1a161b74f128c35b031ce88ab65d440d2d3"
+    },
+    {
+      "voice": "bass",
+      "variant": 3,
+      "file": "bass-3.wav",
+      "duration_ms": 220,
+      "sha256": "1eb617c2d22e17e484b452922925f9bf10471683aded8f5da34d3eadd6c8cd32"
+    },
+    {
+      "voice": "bass",
+      "variant": 4,
+      "file": "bass-4.wav",
+      "duration_ms": 220,
+      "sha256": "a3cd162379bc84e76d7c4671eba03c0e766ff67411ebb7417d74786d825f4c1a"
+    },
+    {
+      "voice": "bass",
+      "variant": 5,
+      "file": "bass-5.wav",
+      "duration_ms": 220,
+      "sha256": "b64c0bbc020bc5992e323c1173d0d66670f1f5b29ef3700e063001dd9e212cf3"
+    }
+  ],
+  "kit_hash": "c1de3fbebe3e57868cc9d52ba1f0d9a435f879f05f31b88d0448ad174ef0e9f0"
+}
